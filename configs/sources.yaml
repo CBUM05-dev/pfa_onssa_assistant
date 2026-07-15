@@ -1,0 +1,33 @@
+sources:
+  - name: onssa
+    base_url: https://www.onssa.gov.ma/
+    seed_urls:
+      - https://www.onssa.gov.ma/
+    allowed_domains:
+      - www.onssa.gov.ma
+      - onssa.gov.ma
+    max_depth: 2
+    include_url_patterns:
+      - regulation
+      - reglementation
+      - réglementation
+      - securite
+      - sécurité
+      - sanitaire
+      - aliment
+      - aliments
+      - denrees
+      - denrées
+      - pdf
+    exclude_url_patterns:
+      - facebook.com
+      - twitter.com
+      - x.com
+      - linkedin.com
+      - youtube.com
+      - instagram.com
+    pages_dir: data/raw/pages/onssa
+    pdfs_dir: data/raw/pdfs/onssa
+    manifest_path: data/sources/onssa_manifest.json
+    request_timeout_seconds: 30
+    user_agent: ONSSA-AI-Service-SourceSync/0.1

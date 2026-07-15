@@ -1,0 +1,123 @@
+taxonomy:
+  default_vertical: regulation
+  default_domain: unclassified
+  default_subdomain: unclassified
+  rules:
+    - url_contains: /reglementation/reglementation-transversale/securite-sanitaire/
+      vertical: regulation
+      domain: reglementation_transversale
+      subdomain: securite_sanitaire
+      display_path:
+        - Reglementation
+        - Reglementation Transversale
+        - Securite Sanitaire
+      include_in_first_slice: true
+
+    - url_contains: /reglementation/reglementation-transversale/surveillance-et-controle-sanitaire/
+      vertical: regulation
+      domain: reglementation_transversale
+      subdomain: surveillance_et_controle_sanitaire
+      display_path:
+        - Reglementation
+        - Reglementation Transversale
+        - Surveillance et Controle Sanitaire
+      include_in_first_slice: false
+
+    - url_contains: /reglementation/reglementation-transversale/missions-et-attributions-de-lonssa/
+      vertical: regulation
+      domain: reglementation_transversale
+      subdomain: missions_et_attributions_onssa
+      display_path:
+        - Reglementation
+        - Reglementation Transversale
+        - Missions et Attributions de l'ONSSA
+      include_in_first_slice: false
+
+    - url_contains: /reglementation/reglementation-transversale/conformite-des-produits/
+      vertical: regulation
+      domain: reglementation_transversale
+      subdomain: conformite_des_produits
+      display_path:
+        - Reglementation
+        - Reglementation Transversale
+        - Conformite des Produits
+      include_in_first_slice: false
+
+    - url_contains: /reglementation/reglementation-transversale/import-export/
+      vertical: regulation
+      domain: reglementation_transversale
+      subdomain: import_export
+      display_path:
+        - Reglementation
+        - Reglementation Transversale
+        - Import Export
+      include_in_first_slice: false
+
+    - url_contains: /reglementation/reglementation-transversale/laboratoires/
+      vertical: regulation
+      domain: reglementation_transversale
+      subdomain: laboratoires
+      display_path:
+        - Reglementation
+        - Reglementation Transversale
+        - Laboratoires
+      include_in_first_slice: false
+
+    - url_contains: /reglementation/reglementation-transversale/commissions-comites-de-coordination/
+      vertical: regulation
+      domain: reglementation_transversale
+      subdomain: commissions_comites_coordination
+      display_path:
+        - Reglementation
+        - Reglementation Transversale
+        - Commissions et Comites de Coordination
+      include_in_first_slice: false
+
+    - url_contains: /reglementation/reglementation-transversale/transport-des-produits-alimentaires/
+      vertical: regulation
+      domain: reglementation_transversale
+      subdomain: transport_des_produits_alimentaires
+      display_path:
+        - Reglementation
+        - Reglementation Transversale
+        - Transport des Produits Alimentaires
+      include_in_first_slice: false
+
+    - url_contains: /reglementation/reglementation-sectorielle/produits-alimentaires/
+      vertical: regulation
+      domain: reglementation_sectorielle
+      subdomain: produits_alimentaires
+      display_path:
+        - Reglementation
+        - Reglementation Sectorielle
+        - Produits Alimentaires
+      include_in_first_slice: false
+
+    - url_contains: /reglementation/reglementation-sectorielle/sante-animale/
+      vertical: regulation
+      domain: reglementation_sectorielle
+      subdomain: sante_animale
+      display_path:
+        - Reglementation
+        - Reglementation Sectorielle
+        - Sante Animale
+      include_in_first_slice: false
+
+    - url_contains: /reglementation/reglementation-sectorielle/sante-vegetale/
+      vertical: regulation
+      domain: reglementation_sectorielle
+      subdomain: sante_vegetale
+      display_path:
+        - Reglementation
+        - Reglementation Sectorielle
+        - Sante Vegetale
+      include_in_first_slice: false
+
+    - url_contains: /reglementation/reglementation-connexe/
+      vertical: regulation
+      domain: reglementation_connexe
+      subdomain: unclassified
+      display_path:
+        - Reglementation
+        - Reglementation Connexe
+      include_in_first_slice: false

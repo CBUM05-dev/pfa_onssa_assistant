@@ -1,0 +1,18 @@
+chunking:
+  corpus_path: data/corpus/knowledge_corpus.json
+  output_path: data/processed/chunks/chunks.jsonl
+  report_path: data/processed/chunks/chunking_report.json
+  strategy: structure_aware
+  max_chars: 1800
+  overlap_chars: 220
+  min_chars: 120
+  prefer_structure_boundaries: true
+  structural_markers:
+    - article
+    - chapitre
+    - section
+    - titre
+    - annexe
+  require_domain: reglementation_transversale
+  require_subdomain: securite_sanitaire
+  fail_on_unclassified: true

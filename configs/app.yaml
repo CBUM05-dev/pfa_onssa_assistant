@@ -1,0 +1,14 @@
+app:
+  name: onssa-ai-service
+  environment: dev
+  api_prefix: /api/v1
+  request_timeout_seconds: 120
+  cors_origins: []
+paths:
+  corpus_path: data/corpus/knowledge_corpus.json
+  chunks_dir: data/processed/chunks
+  instruction_dataset_dir: data/processed/instruction_dataset
+  embeddings_dir: data/processed/embeddings
+  model_dir: data/models
+  source_manifest_path: data/sources/onssa_manifest.json
+  corpus_reports_dir: data/corpus/validation_reports

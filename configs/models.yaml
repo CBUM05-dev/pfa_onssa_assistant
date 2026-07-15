@@ -1,0 +1,15 @@
+models:
+  embedding_model: BAAI/bge-m3
+  reranker_model: BAAI/bge-reranker-v2-m3
+  llm_model: Qwen/Qwen3-8B-Instruct
+  inference_backend: vllm
+  embedding_device: auto
+  reranker_device: auto
+vllm:
+  base_url: http://vllm:8000
+  model: Qwen/Qwen3-8B-Instruct
+  timeout_seconds: 120
+ollama:
+  base_url: http://ollama:11434
+  model: qwen3:8b
+  timeout_seconds: 120

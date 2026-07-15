@@ -1,0 +1,14 @@
+retrieval:
+  vertical: regulation
+  domain: transversal_regulation
+  subdomain: food_safety
+  top_k_initial: 30
+  top_k_reranked: 8
+  min_retrieval_score: 0.45
+  min_rerank_score: 0.20
+  require_evidence: true
+rag:
+  max_context_chunks: 8
+  refuse_without_evidence: true
+  citation_required: true
+  max_answer_tokens: 1024

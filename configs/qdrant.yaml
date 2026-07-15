@@ -1,0 +1,14 @@
+qdrant:
+  host: qdrant
+  port: 6333
+  https: false
+  collection_name: onssa_food_safety_regulations
+  vector_size: 1024
+  distance: cosine
+  payload_indexes:
+    - vertical
+    - domain
+    - subdomain
+    - document_id
+    - regulation_type
+    - language

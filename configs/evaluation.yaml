@@ -1,0 +1,7 @@
+evaluation:
+  golden_set_path: data/eval/golden_sets/food_safety.jsonl
+  reports_dir: data/eval/reports
+  require_citations: true
+  retrieval_k_values: [5, 10, 30]
+  minimum_citation_accuracy: 0.95
+  minimum_refusal_accuracy: 0.95

@@ -1,0 +1,12 @@
+finetuning:
+  base_model: Qwen/Qwen3-8B-Instruct
+  dataset_dir: data/processed/instruction_dataset
+  output_dir: data/models/adapters/qwen3-8b-onssa-style
+  max_seq_length: 4096
+  lora_r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  batch_size: 1
+  gradient_accumulation_steps: 16
+  learning_rate: 0.0002
+  epochs: 3

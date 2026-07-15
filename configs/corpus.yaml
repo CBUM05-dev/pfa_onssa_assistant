@@ -1,0 +1,13 @@
+corpus:
+  source_manifest_path: data/sources/onssa_manifest.json
+  output_path: data/corpus/knowledge_corpus.json
+  report_path: data/corpus/validation_reports/knowledge_corpus_build_report.json
+  taxonomy_path: configs/taxonomy.yaml
+  include_pages: false
+  # false = build only the current vertical slice.
+  # true = keep all processable PDFs, but non-matching documents stay unclassified.
+  include_all_sources: false
+  min_text_chars: 80
+  vertical: regulation
+  domain: reglementation_transversale
+  subdomain: securite_sanitaire

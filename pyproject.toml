@@ -1,0 +1,63 @@
+[project]
+name = "onssa-ai-service"
+version = "0.1.0"
+description = "On-premise AI backend service for ONSSA regulatory food-safety assistance."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.30.0",
+    "pydantic>=2.8.0",
+    "pydantic-settings>=2.4.0",
+    "pyyaml>=6.0.0",
+    "httpx>=0.27.0",
+    "beautifulsoup4>=4.12.0",
+    "pypdf>=4.3.0",
+    "qdrant-client>=1.10.0",
+    "structlog>=24.2.0",
+    "prometheus-client>=0.20.0",
+]
+
+[project.optional-dependencies]
+ml = [
+    "torch>=2.4.0",
+    "transformers>=4.44.0",
+    "sentence-transformers>=3.0.0",
+    "accelerate>=0.33.0",
+    "peft>=0.12.0",
+    "trl>=0.9.0",
+    "bitsandbytes>=0.43.0",
+]
+dev = [
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.23.0",
+    "ruff>=0.5.0",
+    "mypy>=1.11.0",
+]
+
+[project.scripts]
+onssa-api = "onssa_ai.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/onssa_ai"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "ANN"]
+ignore = ["ANN101", "ANN102"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+packages = ["onssa_ai"]

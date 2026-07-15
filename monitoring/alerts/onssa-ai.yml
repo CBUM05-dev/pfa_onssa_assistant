@@ -1,0 +1,10 @@
+groups:
+  - name: onssa-ai
+    rules:
+      - alert: OnssaApiDown
+        expr: up{job="onssa-api"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: ONSSA AI API is down

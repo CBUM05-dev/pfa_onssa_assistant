@@ -1,0 +1,13 @@
+embeddings:
+  input_path: data/processed/chunks/chunks.jsonl
+  output_path: data/processed/embeddings/chunk_embeddings.jsonl
+  report_path: data/processed/embeddings/embedding_report.json
+  model_name: BAAI/bge-m3
+  device: auto
+  batch_size: 8
+  vector_size: 1024
+  normalize_embeddings: true
+  local_files_only: true
+  cache_dir: data/models/base
+  text_prefix: ""
+  overwrite: true
