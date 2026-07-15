@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-07-08T12:00:57.870508+00:00",
+  "source_manifest_path": "data\\sources\\onssa_manifest.json",
+  "output_path": "data\\corpus\\knowledge_corpus.json",
+  "total_manifest_entries": 348,
+  "included_documents": 19,
+  "first_slice_documents": 19,
+  "unclassified_documents": 0,
+  "skipped_documents": 329,
+  "failed_documents": 0,
+  "failures": []
+}
