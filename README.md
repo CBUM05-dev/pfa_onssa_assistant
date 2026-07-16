@@ -10,6 +10,10 @@ Regulation -> Transversal Regulation -> Food Safety
 
 The service is designed to be consumed by the existing ONSSA platform through a REST API. It is not a replacement platform and does not depend on external cloud AI APIs.
 
+## Temporary Test Phase
+
+For the current validation phase, the vertical slice can use Groq as a temporary external generation backend while GPU resources are not yet available. Qdrant, embeddings, reranking, evidence policy, and citations remain part of the test path. This does not replace the target on-premise architecture. The rollback notes are tracked in `RETOUR_APRES_PHASE_TEST.md`.
+
 ## Core Pipeline
 
 ```text
@@ -28,7 +32,7 @@ Documents ONSSA
 ## Non-Negotiable Constraints
 
 - Fully on-premise deployment.
-- No OpenAI API or external cloud AI service.
+- No OpenAI API or external cloud AI service in the target production architecture. Groq is documented as a temporary phase-test exception only.
 - Regulatory knowledge comes from retrieval, not model memorization.
 - RAG must not answer without retrieved evidence.
 - Every answer must preserve citation traceability to source documents.

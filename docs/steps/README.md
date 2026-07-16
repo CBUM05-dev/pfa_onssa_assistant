@@ -10,6 +10,7 @@ Ce dossier explique le projet dans l'ordre de construction.
 4. `step4_corpus_validation_chunking.md`
 5. `step5_embeddings.md`
 6. `step6_qdrant_indexing.md`
+7. `step7_rag_groq_test.md`
 
 Chaque fichier explique:
 
