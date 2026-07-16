@@ -1,7 +1,7 @@
 retrieval:
   vertical: regulation
-  domain: transversal_regulation
-  subdomain: food_safety
+  domain: reglementation_transversale
+  subdomain: securite_sanitaire
   top_k_initial: 30
   top_k_reranked: 8
   min_retrieval_score: 0.45

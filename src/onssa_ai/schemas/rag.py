@@ -11,8 +11,8 @@ from onssa_ai.schemas.retrieval import RetrievedChunk, RetrievalFilters
 class RagRequest(BaseModel):
     question: str = Field(min_length=1)
     vertical: str = "regulation"
-    domain: str = "transversal_regulation"
-    subdomain: str = "food_safety"
+    domain: str = "reglementation_transversale"
+    subdomain: str = "securite_sanitaire"
     language: str = "fr"
     filters: RetrievalFilters = Field(default_factory=RetrievalFilters)
 
