@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ONSSA Assistant Reglementaire - Demo</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="top-strip">
+      <div class="top-inner">
+        <span>Royaume du Maroc</span>
+        <span>Office National de Securite Sanitaire des Produits Alimentaires</span>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <nav class="main-nav" aria-label="Navigation principale">
+        <a class="brand" href="#">
+          <span class="brand-mark">ONSSA</span>
+          <span class="brand-copy">
+            <strong>ONSSA</strong>
+            <small>Assistant reglementaire</small>
+          </span>
+        </a>
+        <div class="nav-links">
+          <a href="#">Accueil</a>
+          <a href="#">Reglementation</a>
+          <a href="#">Securite sanitaire</a>
+          <a href="#">Contact</a>
+        </div>
+      </nav>
+
+      <section class="hero">
+        <div class="hero-content">
+          <p class="kicker">Vertical slice de demonstration</p>
+          <h1>Controle rapide des textes reglementaires ONSSA.</h1>
+          <p class="hero-copy">
+            Posez une question en langage naturel. Le systeme recupere les preuves depuis Qdrant,
+            reranke les passages, puis genere une reponse citee via le backend de test Groq.
+          </p>
+          <div class="hero-actions">
+            <button class="primary-action" id="openChatHero" type="button">Tester l'assistant</button>
+            <span class="status-pill" id="backendStatus">Backend non verifie</span>
+          </div>
+        </div>
+
+        <div class="official-panel" aria-label="Apercu du service">
+          <div class="panel-header">
+            <span>Service numerique</span>
+            <strong>Reglementation / Securite sanitaire</strong>
+          </div>
+          <div class="signal-row">
+            <span>Corpus</span>
+            <strong>ONSSA</strong>
+          </div>
+          <div class="signal-row">
+            <span>Recherche</span>
+            <strong>Qdrant + BGE</strong>
+          </div>
+          <div class="signal-row">
+            <span>Citations</span>
+            <strong>Pages, articles, chunks</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="service-band">
+        <div>
+          <h2>Resultat lisible pour la validation responsable</h2>
+          <p>
+            La demonstration garde les details techniques disponibles, mais les separe de la
+            reponse principale pour une lecture claire.
+          </p>
+        </div>
+        <button class="secondary-action" id="openChatBand" type="button">Ouvrir le chat</button>
+      </section>
+    </main>
+
+    <button class="chat-launcher" id="chatLauncher" type="button" aria-label="Ouvrir le chat">
+      <img src="assets/avatar_icon.png" alt="" />
+      <span>Assistant</span>
+    </button>
+
+    <section class="chat-widget" id="chatWidget" aria-label="Assistant ONSSA" aria-hidden="true">
+      <header class="chat-header">
+        <div>
+          <span class="chat-eyebrow">ONSSA AI</span>
+          <h2>Assistant reglementaire</h2>
+        </div>
+        <button class="icon-button" id="closeChat" type="button" aria-label="Fermer">x</button>
+      </header>
+
+      <div class="chat-body" id="chatBody">
+        <article class="message assistant">
+          <p>
+            Bonjour. Posez une question sur le vertical slice
+            <strong>reglementation transversale / securite sanitaire</strong>.
+          </p>
+        </article>
+      </div>
+
+      <form class="chat-form" id="chatForm">
+        <textarea
+          id="questionInput"
+          rows="2"
+          placeholder="Ex: Quelle est la base reglementaire de la securite sanitaire des produits alimentaires ?"
+        ></textarea>
+        <button type="submit">Envoyer</button>
+      </form>
+    </section>
+
+    <dialog class="details-dialog" id="detailsDialog">
+      <div class="details-header">
+        <div>
+          <span>Details RAG</span>
+          <h2>Preuves, scores et citations</h2>
+        </div>
+        <button class="icon-button" id="closeDetails" type="button" aria-label="Fermer">x</button>
+      </div>
+      <div class="details-content" id="detailsContent"></div>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>
