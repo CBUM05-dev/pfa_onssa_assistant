@@ -49,10 +49,22 @@ Demarrer Qdrant en local:
 docker compose -f deployment/compose/docker-compose.dev.yml up -d qdrant
 ```
 
+Si une ancienne image Qdrant a deja ete lancee, recréer le container apres changement de version:
+
+```bash
+docker compose -f deployment/compose/docker-compose.dev.yml up -d --force-recreate qdrant
+```
+
 Indexer les embeddings:
 
 ```bash
 python scripts/index_qdrant.py --embeddings-config configs/embeddings.yaml --qdrant-config configs/qdrant.yaml
+```
+
+Depuis PowerShell sur la machine hote, utiliser `127.0.0.1` car le nom Docker `qdrant` n'est resolu qu'entre containers:
+
+```bash
+python scripts/index_qdrant.py --embeddings-config configs/embeddings.yaml --qdrant-config configs/qdrant.yaml --qdrant-host 127.0.0.1
 ```
 
 Ou:

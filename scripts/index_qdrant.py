@@ -52,6 +52,17 @@ def parse_args() -> argparse.Namespace:
         default="data/processed/embeddings/qdrant_index_report.json",
         help="Path for the indexing report.",
     )
+    parser.add_argument(
+        "--qdrant-host",
+        default=None,
+        help="Override Qdrant host. Use 127.0.0.1 when running this script from PowerShell.",
+    )
+    parser.add_argument(
+        "--qdrant-port",
+        type=int,
+        default=None,
+        help="Override Qdrant port.",
+    )
     parser.add_argument("--batch-size", type=int, default=64, help="Qdrant upsert batch size.")
     return parser.parse_args()
 
@@ -75,9 +86,14 @@ def load_index_config(args: argparse.Namespace) -> QdrantIndexConfig:
     )
 
 
-def load_qdrant_config(path: Path) -> QdrantConfig:
+def load_qdrant_config(path: Path, args: argparse.Namespace) -> QdrantConfig:
     qdrant_yaml = read_yaml(path)
-    return QdrantConfig(**qdrant_yaml.get("qdrant", {}))
+    qdrant_data = qdrant_yaml.get("qdrant", {})
+    if args.qdrant_host:
+        qdrant_data["host"] = args.qdrant_host
+    if args.qdrant_port:
+        qdrant_data["port"] = args.qdrant_port
+    return QdrantConfig(**qdrant_data)
 
 
 def write_report(path: Path, report: QdrantIndexReport) -> None:
@@ -89,7 +105,7 @@ def write_report(path: Path, report: QdrantIndexReport) -> None:
 def main() -> None:
     args = parse_args()
     index_config = load_index_config(args)
-    qdrant_config = load_qdrant_config(Path(args.qdrant_config))
+    qdrant_config = load_qdrant_config(Path(args.qdrant_config), args)
 
     chunks = read_embedded_chunks(index_config.embeddings_path)
     validate_embedding_dimensions(chunks, qdrant_config.vector_size)
