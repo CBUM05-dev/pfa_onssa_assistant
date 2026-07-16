@@ -21,6 +21,8 @@ class RuntimeSettings(BaseSettings):
     qdrant_port: int | None = None
     vllm_base_url: str | None = None
     ollama_base_url: str | None = None
+    groq_base_url: str | None = None
+    groq_api_key: str | None = None
 
 
 class AppConfig(BaseModel):
@@ -43,7 +45,7 @@ class ModelConfig(BaseModel):
     embedding_model: str
     reranker_model: str
     llm_model: str
-    inference_backend: Literal["vllm", "ollama"]
+    inference_backend: Literal["vllm", "ollama", "groq"]
     embedding_device: str = "auto"
     reranker_device: str = "auto"
 
@@ -89,6 +91,7 @@ class Settings(BaseModel):
     models: ModelConfig
     vllm: InferenceEndpointConfig
     ollama: InferenceEndpointConfig
+    groq: InferenceEndpointConfig
     retrieval: RetrievalConfig
     rag: RagConfig
     qdrant: QdrantConfig
@@ -124,10 +127,13 @@ def get_settings() -> Settings:
 
     vllm_data = models_yaml.get("vllm", {})
     ollama_data = models_yaml.get("ollama", {})
+    groq_data = models_yaml.get("groq", {})
     if runtime.vllm_base_url:
         vllm_data["base_url"] = runtime.vllm_base_url
     if runtime.ollama_base_url:
         ollama_data["base_url"] = runtime.ollama_base_url
+    if runtime.groq_base_url:
+        groq_data["base_url"] = runtime.groq_base_url
 
     return Settings(
         runtime=runtime,
@@ -136,6 +142,7 @@ def get_settings() -> Settings:
         models=ModelConfig(**models_yaml.get("models", {})),
         vllm=InferenceEndpointConfig(**vllm_data),
         ollama=InferenceEndpointConfig(**ollama_data),
+        groq=InferenceEndpointConfig(**groq_data),
         retrieval=RetrievalConfig(**retrieval_yaml.get("retrieval", {})),
         rag=RagConfig(**retrieval_yaml.get("rag", {})),
         qdrant=QdrantConfig(**qdrant_data),

@@ -2,7 +2,7 @@ models:
   embedding_model: BAAI/bge-m3
   reranker_model: BAAI/bge-reranker-v2-m3
   llm_model: Qwen/Qwen3-8B-Instruct
-  inference_backend: vllm
+  inference_backend: groq
   embedding_device: auto
   reranker_device: auto
 vllm:
@@ -12,4 +12,8 @@ vllm:
 ollama:
   base_url: http://ollama:11434
   model: qwen3:8b
+  timeout_seconds: 120
+groq:
+  base_url: https://api.groq.com/openai/v1
+  model: llama-3.1-8b-instant
   timeout_seconds: 120
