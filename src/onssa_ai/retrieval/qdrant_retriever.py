@@ -3,6 +3,7 @@
 from typing import Any
 
 from qdrant_client import QdrantClient
+from qdrant_client.http import models
 
 from onssa_ai.core.config import QdrantConfig, RetrievalConfig
 from onssa_ai.embeddings.embedder import Embedder
@@ -41,6 +42,46 @@ class QdrantRetriever(Retriever):
         return [
             self._to_retrieved_chunk(point.payload or {}, float(point.score))
             for point in results
+        ]
+
+    def expand_with_references(self, retrieved: list[RetrievedChunk]) -> list[RetrievedChunk]:
+        """Append chunks explicitly referenced by initially retrieved evidence."""
+
+        seen_chunk_ids = {item.chunk.chunk_id for item in retrieved}
+        referenced_chunk_ids = [
+            reference.resolved_chunk_id
+            for item in retrieved
+            for reference in item.chunk.metadata.outgoing_references
+            if reference.resolved_chunk_id and reference.resolved_chunk_id not in seen_chunk_ids
+        ]
+        if not referenced_chunk_ids:
+            return retrieved
+
+        referenced = self._retrieve_by_chunk_ids(list(dict.fromkeys(referenced_chunk_ids)))
+        return [*retrieved, *referenced]
+
+    def _retrieve_by_chunk_ids(self, chunk_ids: list[str]) -> list[RetrievedChunk]:
+        if not chunk_ids:
+            return []
+        response = self.client.scroll(
+            collection_name=self.qdrant_config.collection_name,
+            scroll_filter=models.Filter(
+                should=[
+                    models.FieldCondition(
+                        key="chunk_id",
+                        match=models.MatchValue(value=chunk_id),
+                    )
+                    for chunk_id in chunk_ids
+                ]
+            ),
+            limit=len(chunk_ids),
+            with_payload=True,
+            with_vectors=False,
+        )
+        points = response[0] if isinstance(response, tuple) else response.points
+        return [
+            self._to_retrieved_chunk(point.payload or {}, score=0.0)
+            for point in points
         ]
 
     def _to_retrieved_chunk(self, payload: dict[str, Any], score: float) -> RetrievedChunk:

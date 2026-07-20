@@ -7,6 +7,7 @@ from typing import Literal
 
 from onssa_ai.schemas.chunk import ChunkMetadata, KnowledgeChunk
 from onssa_ai.schemas.corpus import CorpusDocument, CorpusPage, KnowledgeCorpus
+from onssa_ai.references.reference_extractor import enrich_chunks_with_references
 
 
 ChunkStrategy = Literal["structure_aware", "page", "character"]
@@ -69,7 +70,7 @@ class CorpusChunker:
                         continue
                     chunk_index = len(chunks)
                     chunks.append(self._build_chunk(document, split_unit, chunk_index))
-        return chunks
+        return enrich_chunks_with_references(chunks)
 
     def _document_units(self, document: CorpusDocument) -> list[RegulatoryUnit]:
         if self.strategy == "character":

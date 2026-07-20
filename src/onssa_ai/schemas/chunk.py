@@ -2,6 +2,8 @@
 
 from pydantic import BaseModel, Field
 
+from onssa_ai.schemas.reference import LegalReference
+
 
 class ChunkMetadata(BaseModel):
     vertical: str
@@ -22,10 +24,16 @@ class ChunkMetadata(BaseModel):
     page_end: int | None = None
     page_numbers: list[int] = Field(default_factory=list)
     article: str | None = None
+    article_number: str | None = None
     section: str | None = None
     section_title: str | None = None
     chunk_type: str = "page"
     structure_path: list[str] = Field(default_factory=list)
+    document_number: str | None = None
+    document_scope: str | None = None
+    answer_role: str = "direct_answer"
+    outgoing_references: list[LegalReference] = Field(default_factory=list)
+    incoming_references: list[LegalReference] = Field(default_factory=list)
     source_hash: str | None = None
     chunk_index: int
     chunk_hash: str

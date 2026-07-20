@@ -50,6 +50,8 @@ class RagService:
                 top_k=None,
             )
         )
+        if hasattr(self.retriever, "expand_with_references"):
+            retrieved = self.retriever.expand_with_references(retrieved)
         reranked = self.reranker.rerank(request.question, retrieved)
         evidence = reranked[: self.rag_config.max_context_chunks]
         if not self.evidence_policy.is_sufficient(evidence):
