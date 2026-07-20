@@ -16,6 +16,7 @@ def build_llm_client(settings: Settings) -> LLMClient:
             base_url=settings.vllm.base_url,
             model=settings.vllm.model,
             timeout_seconds=settings.vllm.timeout_seconds,
+            api_key=settings.runtime.vllm_api_key,
         )
     if backend == "ollama":
         return OllamaClient(

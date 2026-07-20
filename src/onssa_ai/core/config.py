@@ -19,9 +19,14 @@ class RuntimeSettings(BaseSettings):
     log_level: str = "INFO"
     qdrant_host: str | None = None
     qdrant_port: int | None = None
+    inference_backend: Literal["vllm", "ollama", "groq"] | None = None
     vllm_base_url: str | None = None
+    vllm_model: str | None = None
+    vllm_api_key: str | None = None
     ollama_base_url: str | None = None
+    ollama_model: str | None = None
     groq_base_url: str | None = None
+    groq_model: str | None = None
     groq_api_key: str | None = None
 
 
@@ -128,18 +133,27 @@ def get_settings() -> Settings:
     vllm_data = models_yaml.get("vllm", {})
     ollama_data = models_yaml.get("ollama", {})
     groq_data = models_yaml.get("groq", {})
+    models_data = models_yaml.get("models", {})
+    if runtime.inference_backend:
+        models_data["inference_backend"] = runtime.inference_backend
     if runtime.vllm_base_url:
         vllm_data["base_url"] = runtime.vllm_base_url
+    if runtime.vllm_model:
+        vllm_data["model"] = runtime.vllm_model
     if runtime.ollama_base_url:
         ollama_data["base_url"] = runtime.ollama_base_url
+    if runtime.ollama_model:
+        ollama_data["model"] = runtime.ollama_model
     if runtime.groq_base_url:
         groq_data["base_url"] = runtime.groq_base_url
+    if runtime.groq_model:
+        groq_data["model"] = runtime.groq_model
 
     return Settings(
         runtime=runtime,
         app=AppConfig(**app_yaml.get("app", {})),
         paths=PathConfig(**app_yaml.get("paths", {})),
-        models=ModelConfig(**models_yaml.get("models", {})),
+        models=ModelConfig(**models_data),
         vllm=InferenceEndpointConfig(**vllm_data),
         ollama=InferenceEndpointConfig(**ollama_data),
         groq=InferenceEndpointConfig(**groq_data),
