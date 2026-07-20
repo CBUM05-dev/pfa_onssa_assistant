@@ -37,7 +37,9 @@ class CorpusChunker:
     MARKER_RE = re.compile(
         r"(?P<prefix>^|(?<=[.;:])\s+)"
         r"(?P<marker>"
-        r"(?:Article|ARTICLE|Chapitre|CHAPITRE|Section|SECTION|Titre|TITRE|Annexe|ANNEXE)"
+        r"(?:Article|ARTICLE)\s+(?:premier|PREMIER|[0-9]+|[IVXLCDM]+)"
+        r"|(?:Art|ART)\.?\s*(?:[0-9]+|[IVXLCDM]+)"
+        r"|(?:Chapitre|CHAPITRE|Section|SECTION|Titre|TITRE|Annexe|ANNEXE)"
         r"(?:\s+(?:premier|PREMIER|[0-9]+|[IVXLCDM]+))?"
         r")"
         r"(?=\s|[.:;-])"
@@ -259,7 +261,10 @@ class CorpusChunker:
         return current_path
 
     def _marker_kind(self, marker: str) -> str:
-        return marker.split(maxsplit=1)[0].lower()
+        kind = marker.split(maxsplit=1)[0].lower().rstrip(".")
+        if kind == "art":
+            return "article"
+        return kind
 
     def _normalize_marker(self, marker: str | None) -> str:
         return self._normalize_text(marker or "")

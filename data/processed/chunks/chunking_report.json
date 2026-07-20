@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-07-08T12:32:26.756277+00:00",
+  "generated_at": "2026-07-20T11:05:25.793562+00:00",
   "corpus_path": "data\\corpus\\knowledge_corpus.json",
   "output_path": "data\\processed\\chunks\\chunks.jsonl",
   "document_count": 19,
-  "chunk_count": 179,
+  "chunk_count": 263,
   "strategy": "structure_aware",
   "max_chars": 1800,
   "overlap_chars": 220,

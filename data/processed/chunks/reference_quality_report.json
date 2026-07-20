@@ -1,0 +1,297 @@
+{
+  "chunk_count": 263,
+  "answer_roles": {
+    "legal_basis": 18,
+    "missing_content": 13,
+    "substantive_rule": 145,
+    "direct_answer": 80,
+    "guide_content": 5,
+    "approval_reference": 2
+  },
+  "unresolved_reference_count": 22,
+  "missing_guide_or_annex_content_count": 13,
+  "unresolved_references": [
+    {
+      "chunk_id": "chunk-df5eb80d5e40e013382b922a",
+      "citation_label": "المملكة المغربية, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonne s pratiques sanitaires relatif au secteur des huiles d’olive vierge s élaboré par la Fédération Marocaine Interprofessionnelle de l’Olive (INTERPROLIVE) est approuvé"
+    },
+    {
+      "chunk_id": "chunk-8272969d0f5c59b104a97e4e",
+      "citation_label": "المملكة المغربية, pp. 13-15",
+      "reference_type": "loi",
+      "document_number": "28-07",
+      "article_number": "5",
+      "raw_text": "loi n° 28-07"
+    },
+    {
+      "chunk_id": "chunk-8a8b0422ebdb81359176d847",
+      "citation_label": "المملكة المغربية, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonne s pratiques sanitaires relatif au secteur des épices élaboré par la Fédération des Industries de la Conserve des Produits Agricoles du Maroc (FICOPAM) est approuvé"
+    },
+    {
+      "chunk_id": "chunk-06452149b83d7ec59d601cfe",
+      "citation_label": "المملكة المغربية, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonnes pratiques sanitaires relatif au secteur des fruits frais élaboré par la Fédération Interprofessionnelle de la Filière de l’Arboriculture Fruitière au Maroc (FéDAM) est approuvé"
+    },
+    {
+      "chunk_id": "chunk-a6d89e546e3c5f27fbc8f35e",
+      "citation_label": "المملكة المغربية, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonne s pratiques sanitaires relatif au secteur des plantes aromatiques et dérivées élaboré par la Fédération des Industries de la Conserve des Produits Agricoles du Maroc (FICOPAM) est approuvé"
+    },
+    {
+      "chunk_id": "chunk-ed650573a38534e23b8875cc",
+      "citation_label": "المملكة المغربية, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonne s pratiques sanitaires relatif au secteur du sel alimentaire, élaboré par l’Association Marocaine de la Production et de l’Industrie du Sel (AMPIS) , est approuvé"
+    },
+    {
+      "chunk_id": "chunk-7d8c0a168ed2861c7ed2e875",
+      "citation_label": "المملكة المغربية, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonne pratique sanita ire relatif au secteur de la semi -conserve des câpres élaboré par la Fédération des industries de conserve des produits agricoles du Maroc (FICOPAM) est approuvé"
+    },
+    {
+      "chunk_id": "chunk-11f2515c60eb310c618a0308",
+      "citation_label": "المملكة المغربية, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonnes pratiques sanitaires relatif au secteu r de la charcuterie élaboré par l’Association N ationale de Transformation des V iandes Halal (ANTVH) est approuvé"
+    },
+    {
+      "chunk_id": "chunk-6fdaffc4d02faadfd3882c84",
+      "citation_label": "CIRCULAIRE, p. 1",
+      "reference_type": "decret",
+      "document_number": "2-09-319",
+      "article_number": "13",
+      "raw_text": "décret n°2-09-319"
+    },
+    {
+      "chunk_id": "chunk-4e199b7076f67dc6c4a8869e",
+      "citation_label": "المملكة المغربية, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonne pratique sanita ire relatif au secteur de la semi -conserve des olives élaboré par la Fédération des industries de conserve des produits agricoles du Maroc (FICOPAM) est approuvé"
+    },
+    {
+      "chunk_id": "chunk-d3713e7a9b1477e8810c1f22",
+      "citation_label": "ARR 318 15 FR 11c7ae2eea87, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonne pratique sanitaire de la minoterie industrielle élaboré par la fédération nationale de la minoterie est approuvé"
+    },
+    {
+      "chunk_id": "chunk-3204ca4cbf58f2e7ce2c6676",
+      "citation_label": "ARR.2300-17.FR.c1, p. 1",
+      "reference_type": "loi",
+      "document_number": "28-07",
+      "article_number": "66",
+      "raw_text": "loi n°28-07"
+    },
+    {
+      "chunk_id": "chunk-47859662ba0f12c0b0791d39",
+      "citation_label": "ARR.2300-17.FR.c1, ART. 4, p. 2",
+      "reference_type": "codex",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "Codex alimentarius"
+    },
+    {
+      "chunk_id": "chunk-09e821abb395e6afc4ec26ce",
+      "citation_label": "المملكة المغربية, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonnes pratiques sanitaires relatif au secteur des fruits rouges surgelés/congelés, élaboré par la Fédération interprofes sionnelle marocaine des fruits rouges INTERPROBERRIES MAROC (IPBM), est approuvé"
+    },
+    {
+      "chunk_id": "chunk-a593c3b9e21f8c6bc9d07a5a",
+      "citation_label": "LOI 28 07 FR 4844c63a1a46, Article 9, pp. 6-7",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonnes pratiques sanitaires approuvé"
+    },
+    {
+      "chunk_id": "chunk-02307926843574228237d464",
+      "citation_label": "DEC 2 10 473 FR  9dd2a69405b0, p. 1",
+      "reference_type": "loi",
+      "document_number": "28-07",
+      "article_number": null,
+      "raw_text": "loi n°28-07"
+    },
+    {
+      "chunk_id": "chunk-614be6a61c799a74a3536935",
+      "citation_label": "DEC 2 10 473 FR  9dd2a69405b0, ART. 43, p. 13",
+      "reference_type": "codex",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "Codex alimentarius"
+    },
+    {
+      "chunk_id": "chunk-b684d4b497ab16bbeeb8a19e",
+      "citation_label": "DEC 2 10 473 FR  9dd2a69405b0, TITRE VI, p. 23",
+      "reference_type": "loi",
+      "document_number": "49-99",
+      "article_number": null,
+      "raw_text": "loi n°49-99"
+    },
+    {
+      "chunk_id": "chunk-098337497bdc54222d732753",
+      "citation_label": "DEC 2 10 473 FR  9dd2a69405b0, TITRE VI, p. 23",
+      "reference_type": "loi",
+      "document_number": "49-99",
+      "article_number": null,
+      "raw_text": "loi n°49-99"
+    },
+    {
+      "chunk_id": "chunk-204743613af6236c84bf3c80",
+      "citation_label": "DEC 2 10 473 FR  9dd2a69405b0, pp. 25-26",
+      "reference_type": "loi",
+      "document_number": "28-07",
+      "article_number": null,
+      "raw_text": "loi n°28-07"
+    },
+    {
+      "chunk_id": "chunk-481e462f68caffe69a5cd39c",
+      "citation_label": "المملكة المغربية, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonnes pratiques sanitaires relatif au secteur des produits maraichers élaboré par la Fédération Interprofessionnelle de Production et d ’Exportation des Fruits et Légumes (FIFEL) est approuvé"
+    },
+    {
+      "chunk_id": "chunk-bf985d14f4988f48effb467a",
+      "citation_label": "المملكة المغربية, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonnes pratiques sanitaires relatif au s ecteur des fruits rouges frais élaboré par la Fédération interprofessionnelle marocaine des fruits rouges INTERPROBERRIES MAROC (IPBM), est approuvé"
+    }
+  ],
+  "missing_guide_or_annex_content": [
+    {
+      "chunk_id": "chunk-df5eb80d5e40e013382b922a",
+      "citation_label": "المملكة المغربية, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonne s pratiques sanitaires relatif au secteur des huiles d’olive vierge s élaboré par la Fédération Marocaine Interprofessionnelle de l’Olive (INTERPROLIVE) est approuvé"
+    },
+    {
+      "chunk_id": "chunk-8a8b0422ebdb81359176d847",
+      "citation_label": "المملكة المغربية, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonne s pratiques sanitaires relatif au secteur des épices élaboré par la Fédération des Industries de la Conserve des Produits Agricoles du Maroc (FICOPAM) est approuvé"
+    },
+    {
+      "chunk_id": "chunk-06452149b83d7ec59d601cfe",
+      "citation_label": "المملكة المغربية, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonnes pratiques sanitaires relatif au secteur des fruits frais élaboré par la Fédération Interprofessionnelle de la Filière de l’Arboriculture Fruitière au Maroc (FéDAM) est approuvé"
+    },
+    {
+      "chunk_id": "chunk-a6d89e546e3c5f27fbc8f35e",
+      "citation_label": "المملكة المغربية, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonne s pratiques sanitaires relatif au secteur des plantes aromatiques et dérivées élaboré par la Fédération des Industries de la Conserve des Produits Agricoles du Maroc (FICOPAM) est approuvé"
+    },
+    {
+      "chunk_id": "chunk-ed650573a38534e23b8875cc",
+      "citation_label": "المملكة المغربية, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonne s pratiques sanitaires relatif au secteur du sel alimentaire, élaboré par l’Association Marocaine de la Production et de l’Industrie du Sel (AMPIS) , est approuvé"
+    },
+    {
+      "chunk_id": "chunk-7d8c0a168ed2861c7ed2e875",
+      "citation_label": "المملكة المغربية, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonne pratique sanita ire relatif au secteur de la semi -conserve des câpres élaboré par la Fédération des industries de conserve des produits agricoles du Maroc (FICOPAM) est approuvé"
+    },
+    {
+      "chunk_id": "chunk-11f2515c60eb310c618a0308",
+      "citation_label": "المملكة المغربية, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonnes pratiques sanitaires relatif au secteu r de la charcuterie élaboré par l’Association N ationale de Transformation des V iandes Halal (ANTVH) est approuvé"
+    },
+    {
+      "chunk_id": "chunk-4e199b7076f67dc6c4a8869e",
+      "citation_label": "المملكة المغربية, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonne pratique sanita ire relatif au secteur de la semi -conserve des olives élaboré par la Fédération des industries de conserve des produits agricoles du Maroc (FICOPAM) est approuvé"
+    },
+    {
+      "chunk_id": "chunk-d3713e7a9b1477e8810c1f22",
+      "citation_label": "ARR 318 15 FR 11c7ae2eea87, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonne pratique sanitaire de la minoterie industrielle élaboré par la fédération nationale de la minoterie est approuvé"
+    },
+    {
+      "chunk_id": "chunk-09e821abb395e6afc4ec26ce",
+      "citation_label": "المملكة المغربية, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonnes pratiques sanitaires relatif au secteur des fruits rouges surgelés/congelés, élaboré par la Fédération interprofes sionnelle marocaine des fruits rouges INTERPROBERRIES MAROC (IPBM), est approuvé"
+    },
+    {
+      "chunk_id": "chunk-a593c3b9e21f8c6bc9d07a5a",
+      "citation_label": "LOI 28 07 FR 4844c63a1a46, Article 9, pp. 6-7",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonnes pratiques sanitaires approuvé"
+    },
+    {
+      "chunk_id": "chunk-481e462f68caffe69a5cd39c",
+      "citation_label": "المملكة المغربية, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonnes pratiques sanitaires relatif au secteur des produits maraichers élaboré par la Fédération Interprofessionnelle de Production et d ’Exportation des Fruits et Légumes (FIFEL) est approuvé"
+    },
+    {
+      "chunk_id": "chunk-bf985d14f4988f48effb467a",
+      "citation_label": "المملكة المغربية, ARTICLE PREMIER, p. 1",
+      "reference_type": "annex_or_guide_content",
+      "document_number": null,
+      "article_number": null,
+      "raw_text": "guide de bonnes pratiques sanitaires relatif au s ecteur des fruits rouges frais élaboré par la Fédération interprofessionnelle marocaine des fruits rouges INTERPROBERRIES MAROC (IPBM), est approuvé"
+    }
+  ]
+}

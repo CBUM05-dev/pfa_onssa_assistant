@@ -67,7 +67,7 @@ class RagService:
         answer = await self.llm_client.generate(prompt, self.rag_config.max_answer_tokens)
         return RagResponse(
             answer=answer,
-            citations=self.citation_builder.build(evidence),
+            citations=self.citation_builder.build(evidence, question=request.question),
             evidence=evidence,
             confidence="sufficient",
             refused=False,
