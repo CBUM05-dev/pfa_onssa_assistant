@@ -3,6 +3,13 @@ sources:
     base_url: https://www.onssa.gov.ma/
     seed_urls:
       - https://www.onssa.gov.ma/
+      - https://www.onssa.gov.ma/onssa/a-propos-de-lonssa/
+      - https://www.onssa.gov.ma/missions/
+      - https://www.onssa.gov.ma/organisation/
+      - https://www.onssa.gov.ma/prestations-payantes/
+      - https://www.onssa.gov.ma/oeuvres-sociales/
+      - https://www.onssa.gov.ma/contact/
+      - https://www.onssa.gov.ma/glossaire/
     allowed_domains:
       - www.onssa.gov.ma
       - onssa.gov.ma
@@ -18,6 +25,13 @@ sources:
       - aliments
       - denrees
       - denrées
+      - onssa
+      - missions
+      - organisation
+      - prestations
+      - oeuvres-sociales
+      - contact
+      - glossaire
       - pdf
     exclude_url_patterns:
       - facebook.com

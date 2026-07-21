@@ -38,10 +38,15 @@ class SourceClassifier:
         matched_keywords = self._food_safety_keywords(text)
         taxonomy_match = self.taxonomy.match(entry.url, entry.parent_url) if self.taxonomy else None
 
-        if entry.kind != "pdf":
-            return self._excluded(language, regulation_type, "non-PDF source")
-
-        if taxonomy_match and taxonomy_match.include_in_first_slice:
+        if (
+            taxonomy_match
+            and taxonomy_match.include_in_first_slice
+            and self._matches_target(
+                taxonomy_match.vertical,
+                taxonomy_match.domain,
+                taxonomy_match.subdomain,
+            )
+        ):
             return SourceClassification(
                 include=True,
                 vertical=taxonomy_match.vertical,
@@ -59,6 +64,9 @@ class SourceClassifier:
                 site_sub_subdomain_display=taxonomy_match.sub_subdomain_display,
                 reason="matched ONSSA site taxonomy first slice",
             )
+
+        if entry.kind != "pdf" and not self.include_all_sources:
+            return self._excluded(language, regulation_type, "non-PDF source")
 
         if self.include_all_sources:
             if taxonomy_match and taxonomy_match.matched:
@@ -94,6 +102,13 @@ class SourceClassifier:
             )
 
         return self._excluded(language, regulation_type, "outside configured first slice")
+
+    def _matches_target(self, vertical: str, domain: str, subdomain: str) -> bool:
+        return (
+            vertical == self.target_vertical
+            and domain == self.target_domain
+            and subdomain == self.target_subdomain
+        )
 
     def _excluded(
         self,

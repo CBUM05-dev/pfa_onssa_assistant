@@ -3,6 +3,90 @@ taxonomy:
   default_domain: unclassified
   default_subdomain: unclassified
   rules:
+    - url_contains: /onssa/a-propos-de-lonssa/
+      vertical: institutionnel
+      domain: onssa
+      subdomain: presentation
+      sub_subdomain: a_propos
+      sub_subdomain_display: A propos de l'ONSSA
+      display_path:
+        - ONSSA
+        - Presentation
+        - A propos de l'ONSSA
+      include_in_first_slice: true
+
+    - url_contains: /missions/
+      vertical: institutionnel
+      domain: onssa
+      subdomain: presentation
+      sub_subdomain: missions
+      sub_subdomain_display: Missions
+      display_path:
+        - ONSSA
+        - Presentation
+        - Missions
+      include_in_first_slice: true
+
+    - url_contains: /organisation/
+      vertical: institutionnel
+      domain: onssa
+      subdomain: presentation
+      sub_subdomain: organisation
+      sub_subdomain_display: Organisation
+      display_path:
+        - ONSSA
+        - Presentation
+        - Organisation
+      include_in_first_slice: true
+
+    - url_contains: /prestations-payantes/
+      vertical: institutionnel
+      domain: onssa
+      subdomain: presentation
+      sub_subdomain: prestations_payantes
+      sub_subdomain_display: Prestations payantes
+      display_path:
+        - ONSSA
+        - Presentation
+        - Prestations payantes
+      include_in_first_slice: true
+
+    - url_contains: /oeuvres-sociales/
+      vertical: institutionnel
+      domain: onssa
+      subdomain: presentation
+      sub_subdomain: oeuvres_sociales
+      sub_subdomain_display: Oeuvres Sociales
+      display_path:
+        - ONSSA
+        - Presentation
+        - Oeuvres Sociales
+      include_in_first_slice: true
+
+    - url_contains: /contact/
+      vertical: institutionnel
+      domain: onssa
+      subdomain: presentation
+      sub_subdomain: contacts
+      sub_subdomain_display: Contacts
+      display_path:
+        - ONSSA
+        - Presentation
+        - Contacts
+      include_in_first_slice: true
+
+    - url_contains: /glossaire/
+      vertical: institutionnel
+      domain: onssa
+      subdomain: presentation
+      sub_subdomain: glossaire
+      sub_subdomain_display: Glossaire
+      display_path:
+        - ONSSA
+        - Presentation
+        - Glossaire
+      include_in_first_slice: true
+
     - url_contains: /reglementation/reglementation-transversale/securite-sanitaire/
       vertical: regulation
       domain: reglementation_transversale

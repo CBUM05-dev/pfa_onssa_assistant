@@ -1,0 +1,11 @@
+corpus:
+  source_manifest_path: data/sources/onssa_manifest.json
+  output_path: data/corpus/knowledge_corpus_institutionnel.json
+  report_path: data/corpus/validation_reports/knowledge_corpus_institutionnel_build_report.json
+  taxonomy_path: configs/taxonomy.yaml
+  include_pages: true
+  include_all_sources: false
+  min_text_chars: 80
+  vertical: institutionnel
+  domain: onssa
+  subdomain: presentation

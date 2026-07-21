@@ -1,0 +1,16 @@
+chunking:
+  corpus_path: data/corpus/knowledge_corpus_institutionnel.json
+  output_path: data/processed/chunks/chunks_institutionnel.jsonl
+  report_path: data/processed/chunks/chunking_institutionnel_report.json
+  strategy: structure_aware
+  max_chars: 1800
+  overlap_chars: 220
+  min_chars: 80
+  prefer_structure_boundaries: true
+  structural_markers:
+    - heading
+    - table
+    - image
+  require_domain: onssa
+  require_subdomain: presentation
+  fail_on_unclassified: true

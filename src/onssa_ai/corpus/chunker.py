@@ -75,6 +75,10 @@ class CorpusChunker:
         return enrich_chunks_with_references(chunks)
 
     def _document_units(self, document: CorpusDocument) -> list[RegulatoryUnit]:
+        if document.document_type == "page":
+            html_units = self._html_units(document)
+            if html_units:
+                return html_units
         if self.strategy == "character":
             return [
                 RegulatoryUnit(
@@ -88,6 +92,37 @@ class CorpusChunker:
 
         units = self._structure_units(document.pages)
         return units if units else [self._page_unit(page) for page in document.pages]
+
+    def _html_units(self, document: CorpusDocument) -> list[RegulatoryUnit]:
+        blocks = document.metadata.get("html_blocks")
+        if not isinstance(blocks, list):
+            return []
+        units: list[RegulatoryUnit] = []
+        for index, block in enumerate(blocks, start=1):
+            if not isinstance(block, dict):
+                continue
+            text = self._normalize_text(str(block.get("text") or ""))
+            if len(text) < self.min_chars:
+                continue
+            block_type = str(block.get("block_type") or "html_section")
+            title = str(block.get("title") or "").strip() or None
+            heading_path_value = block.get("heading_path") or []
+            heading_path = [
+                str(value).strip()
+                for value in heading_path_value
+                if str(value).strip()
+            ] if isinstance(heading_path_value, list) else []
+            units.append(
+                RegulatoryUnit(
+                    text=text,
+                    page_numbers=[index],
+                    chunk_type=block_type,
+                    title=title,
+                    section=title,
+                    structure_path=heading_path,
+                )
+            )
+        return units
 
     def _structure_units(self, pages: list[CorpusPage]) -> list[RegulatoryUnit]:
         units: list[RegulatoryUnit] = []
@@ -276,6 +311,10 @@ class CorpusChunker:
         return self._normalize_text(f"{left} {right}")
 
     def _citation_label(self, document: CorpusDocument, unit: RegulatoryUnit) -> str:
+        if document.document_type == "page":
+            if unit.section:
+                return f"{document.title}, {unit.section}"
+            return document.title
         pages = sorted(set(unit.page_numbers))
         if not pages:
             return document.title

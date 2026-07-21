@@ -12,6 +12,8 @@ class TaxonomyRule(BaseModel):
     vertical: str
     domain: str
     subdomain: str
+    sub_subdomain: str | None = None
+    sub_subdomain_display: str | None = None
     display_path: list[str] = Field(default_factory=list)
     include_in_first_slice: bool = False
 
@@ -53,7 +55,11 @@ class SiteTaxonomy:
         for rule in self.config.rules:
             normalized_rule = self._normalize_path(rule.url_contains)
             if any(normalized_rule in candidate for candidate in normalized_candidates):
-                sub_subdomain_display = self._infer_sub_subdomain(source_url, rule)
+                sub_subdomain_display = (
+                    rule.sub_subdomain_display
+                    or rule.sub_subdomain
+                    or self._infer_sub_subdomain(source_url, rule)
+                )
                 return TaxonomyMatch(
                     matched=True,
                     vertical=rule.vertical,
