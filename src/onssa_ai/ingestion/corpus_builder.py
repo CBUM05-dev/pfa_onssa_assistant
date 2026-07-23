@@ -111,6 +111,8 @@ class CorpusBuilder:
     def _can_process(self, entry: SourceManifestEntry) -> bool:
         if entry.status == "failed" or not entry.local_path:
             return False
+        if entry.kind not in {"page", "pdf"}:
+            return False
         if entry.kind == "page" and not self.config.include_pages:
             return False
         return Path(entry.local_path).exists()

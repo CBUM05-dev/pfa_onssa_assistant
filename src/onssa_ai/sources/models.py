@@ -6,7 +6,7 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 
-SourceKind = Literal["page", "pdf"]
+SourceKind = Literal["page", "pdf", "image"]
 SourceStatus = Literal["new", "changed", "unchanged", "failed"]
 
 
@@ -33,6 +33,7 @@ class SyncSummary(BaseModel):
     source_name: str
     discovered_pages: int = 0
     discovered_pdfs: int = 0
+    discovered_images: int = 0
     downloaded_new: int = 0
     downloaded_changed: int = 0
     unchanged: int = 0

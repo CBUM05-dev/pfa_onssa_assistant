@@ -16,7 +16,9 @@ class SourceConfig(BaseModel):
     exclude_url_patterns: list[str] = Field(default_factory=list)
     pages_dir: Path
     pdfs_dir: Path
+    images_dir: Path = Path("data/raw/images")
     manifest_path: Path
+    preserve_url_paths: bool = False
     request_timeout_seconds: int = Field(default=30, ge=1)
     user_agent: str = "ONSSA-AI-Service-SourceSync/0.1"
 

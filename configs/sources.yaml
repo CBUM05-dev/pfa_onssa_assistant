@@ -42,6 +42,8 @@ sources:
       - instagram.com
     pages_dir: data/raw/pages/onssa
     pdfs_dir: data/raw/pdfs/onssa
+    images_dir: data/raw/images/onssa
     manifest_path: data/sources/onssa_manifest.json
+    preserve_url_paths: true
     request_timeout_seconds: 30
     user_agent: ONSSA-AI-Service-SourceSync/0.1

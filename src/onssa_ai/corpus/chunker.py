@@ -245,6 +245,7 @@ class CorpusChunker:
                 site_sub_subdomain_display=metadata.get("site_sub_subdomain_display"),
                 document_id=document.document_id,
                 document_title=document.title,
+                document_type=document.document_type,
                 source_url=document.source_url,
                 local_path=document.local_path,
                 regulation_type=metadata.get("regulation_type"),

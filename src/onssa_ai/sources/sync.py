@@ -29,10 +29,14 @@ class SourceSyncService:
                 summary.discovered_pages += 1
                 target_dir = self.config.pages_dir
                 suffix = "html"
-            else:
+            elif source.kind == "pdf":
                 summary.discovered_pdfs += 1
                 target_dir = self.config.pdfs_dir
                 suffix = "pdf"
+            else:
+                summary.discovered_images += 1
+                target_dir = self.config.images_dir
+                suffix = self._image_suffix(source.url)
 
             try:
                 content = self.downloader.download(source.url)
@@ -47,7 +51,12 @@ class SourceSyncService:
                     status = "unchanged"
                     summary.unchanged += 1
 
-                local_path = self.downloader.write(content, target_dir, suffix)
+                local_path = self.downloader.write(
+                    content,
+                    target_dir,
+                    suffix,
+                    preserve_url_path=self.config.preserve_url_paths,
+                )
                 self.manifest.upsert(
                     SourceManifestEntry(
                         url=source.url,
@@ -73,3 +82,10 @@ class SourceSyncService:
 
         self.manifest.save()
         return summary
+
+    def _image_suffix(self, url: str) -> str:
+        lowered = url.lower().split("?", maxsplit=1)[0]
+        for suffix in ["png", "jpg", "jpeg", "webp", "gif"]:
+            if lowered.endswith(f".{suffix}"):
+                return suffix
+        return "img"

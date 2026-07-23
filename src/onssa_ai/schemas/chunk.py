@@ -15,6 +15,7 @@ class ChunkMetadata(BaseModel):
     site_sub_subdomain_display: str | None = None
     document_id: str
     document_title: str
+    document_type: str | None = None
     source_url: str | None = None
     local_path: str | None = None
     regulation_type: str | None = None

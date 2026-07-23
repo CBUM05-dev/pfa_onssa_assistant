@@ -35,7 +35,7 @@ class SourceCrawler:
                 continue
 
             discovered[normalized_url] = current.model_copy(update={"url": normalized_url})
-            if current.kind == "pdf" or current.depth >= self.config.max_depth:
+            if current.kind in {"pdf", "image"} or current.depth >= self.config.max_depth:
                 continue
 
             for child in self._extract_links(normalized_url):
@@ -74,8 +74,12 @@ class SourceCrawler:
             absolute_url = self._normalize_url(urljoin(page_url, href))
             if not self._is_allowed(absolute_url):
                 continue
-            kind = "pdf" if self._looks_like_pdf(absolute_url) else "page"
+            kind = self._kind_for_url(absolute_url)
             links.append(DiscoveredSource(url=absolute_url, kind=kind, depth=0))
+        for image in soup.find_all("img"):
+            for image_url in self._image_urls(page_url, image):
+                if self._is_allowed(image_url):
+                    links.append(DiscoveredSource(url=image_url, kind="image", depth=0))
         return links
 
     def _normalize_url(self, url: str) -> str:
@@ -92,11 +96,34 @@ class SourceCrawler:
         lowered = url.lower()
         if any(pattern.lower() in lowered for pattern in self.config.exclude_url_patterns):
             return False
-        if self._looks_like_pdf(lowered):
+        if self._looks_like_pdf(lowered) or self._looks_like_image(lowered):
             return True
         if not self.config.include_url_patterns:
             return True
         return any(pattern.lower() in lowered for pattern in self.config.include_url_patterns)
 
+    def _kind_for_url(self, url: str) -> str:
+        if self._looks_like_pdf(url):
+            return "pdf"
+        if self._looks_like_image(url):
+            return "image"
+        return "page"
+
     def _looks_like_pdf(self, url: str) -> bool:
         return urlparse(url).path.lower().endswith(".pdf")
+
+    def _looks_like_image(self, url: str) -> bool:
+        return urlparse(url).path.lower().endswith((".png", ".jpg", ".jpeg", ".webp", ".gif"))
+
+    def _image_urls(self, page_url: str, image: object) -> list[str]:
+        urls: list[str] = []
+        src = getattr(image, "get", lambda *_args: None)("src")
+        if src:
+            urls.append(self._normalize_url(urljoin(page_url, str(src).strip())))
+        srcset = getattr(image, "get", lambda *_args: None)("srcset")
+        if srcset:
+            for candidate in str(srcset).split(","):
+                candidate_url = candidate.strip().split(" ", maxsplit=1)[0]
+                if candidate_url:
+                    urls.append(self._normalize_url(urljoin(page_url, candidate_url)))
+        return list(dict.fromkeys(urls))

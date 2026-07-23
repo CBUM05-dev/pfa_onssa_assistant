@@ -9,6 +9,9 @@ qdrant:
     - vertical
     - domain
     - subdomain
+    - site_sub_subdomain
     - document_id
+    - document_type
+    - chunk_type
     - regulation_type
     - language

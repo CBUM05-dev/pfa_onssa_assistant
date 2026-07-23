@@ -1,0 +1,18 @@
+manual_sources:
+  manifest_path: data/sources/onssa_manifest.json
+  pages_dir: data/raw/pages/onssa
+  pages:
+    - url: https://www.onssa.gov.ma/onssa/a-propos-de-lonssa/
+      local_file: data/manual/onssa_institutionnel/a-propos-de-lonssa.html
+    - url: https://www.onssa.gov.ma/missions/
+      local_file: data/manual/onssa_institutionnel/missions.html
+    - url: https://www.onssa.gov.ma/organisation/
+      local_file: data/manual/onssa_institutionnel/organisation.html
+    - url: https://www.onssa.gov.ma/prestations-payantes/
+      local_file: data/manual/onssa_institutionnel/prestations-payantes.html
+    - url: https://www.onssa.gov.ma/oeuvres-sociales/
+      local_file: data/manual/onssa_institutionnel/oeuvres-sociales.html
+    - url: https://www.onssa.gov.ma/contact/
+      local_file: data/manual/onssa_institutionnel/contact.html
+    - url: https://www.onssa.gov.ma/glossaire/
+      local_file: data/manual/onssa_institutionnel/glossaire.html

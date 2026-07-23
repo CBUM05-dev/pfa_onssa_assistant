@@ -52,10 +52,19 @@ class SourceDownloader:
             title=title,
         )
 
-    def write(self, content: DownloadedContent, target_dir: Path, suffix: str) -> Path:
+    def write(
+        self,
+        content: DownloadedContent,
+        target_dir: Path,
+        suffix: str,
+        preserve_url_path: bool = False,
+    ) -> Path:
         target_dir.mkdir(parents=True, exist_ok=True)
-        filename = self._filename_for_url(content.url, suffix)
-        target_path = target_dir / filename
+        if preserve_url_path:
+            target_path = self._path_for_url(target_dir, content.url, suffix)
+        else:
+            target_path = target_dir / self._filename_for_url(content.url, suffix)
+        target_path.parent.mkdir(parents=True, exist_ok=True)
         target_path.write_bytes(content.content)
         return target_path
 
@@ -101,3 +110,25 @@ class SourceDownloader:
         clean = "".join(char if char.isalnum() or char in ("-", "_") else "_" for char in stem)
         digest = sha256(url.encode("utf-8")).hexdigest()[:12]
         return f"{clean[:80]}_{digest}.{suffix}"
+
+    def _path_for_url(self, target_dir: Path, url: str, suffix: str) -> Path:
+        parsed = urlparse(url)
+        path_parts = [part for part in unquote(parsed.path).split("/") if part]
+        if not path_parts:
+            path_parts = ["index"]
+        raw_filename = path_parts[-1]
+        if "." in raw_filename:
+            stem = Path(raw_filename).stem
+            extension = Path(raw_filename).suffix.lstrip(".") or suffix
+        else:
+            stem = raw_filename or "index"
+            extension = suffix
+        clean_dirs = [self._clean_path_part(part) for part in path_parts[:-1]]
+        clean_stem = self._clean_path_part(stem) or "index"
+        digest = sha256(url.encode("utf-8")).hexdigest()[:12]
+        filename = f"{clean_stem[:80]}_{digest}.{extension}"
+        return target_dir.joinpath(parsed.netloc, *clean_dirs, filename)
+
+    def _clean_path_part(self, value: str) -> str:
+        clean = "".join(char if char.isalnum() or char in ("-", "_") else "_" for char in value)
+        return clean.strip("_")[:80]
