@@ -23,6 +23,10 @@ class DownloadedContent:
         self.content_sha256 = sha256(content).hexdigest()
 
 
+class BlockedSourceError(RuntimeError):
+    """Raised when a downloaded response is an access-control challenge."""
+
+
 class SourceDownloader:
     """Download HTML pages and PDF files."""
 
@@ -39,6 +43,7 @@ class SourceDownloader:
             response = client.get(url)
             response.raise_for_status()
         content_type = response.headers.get("content-type")
+        self._raise_for_blocked_source(str(response.url), response.content, content_type)
         title = self._extract_title(response.content, content_type)
         return DownloadedContent(
             url=str(response.url),
@@ -64,6 +69,27 @@ class SourceDownloader:
         if heading:
             return " ".join(heading.get_text(" ", strip=True).split())
         return None
+
+    def _raise_for_blocked_source(
+        self,
+        url: str,
+        content: bytes,
+        content_type: str | None,
+    ) -> None:
+        if not content_type or "html" not in content_type.lower():
+            return
+        text = content.decode("utf-8", errors="ignore").lower()
+        blocked_markers = [
+            "validation request",
+            "user validation required",
+            "captcha.gif",
+            "captcha_resp",
+            "validation needed due to the detection of invalid input",
+        ]
+        if any(marker in text for marker in blocked_markers):
+            raise BlockedSourceError(
+                f"Blocked by source access-control challenge while downloading {url}"
+            )
 
     def _filename_for_url(self, url: str, suffix: str) -> str:
         parsed = urlparse(url)
