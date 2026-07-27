@@ -9,6 +9,9 @@ services:
     volumes:
       - ../../configs:/app/configs:ro
       - ../../data:/app/data
+    extra_hosts:
+      - "www.onssa.gov.ma:192.168.5.20"
+      - "onssa.gov.ma:192.168.5.20"
     depends_on:
       - qdrant
 
