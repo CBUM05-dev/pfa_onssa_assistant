@@ -39,6 +39,18 @@ taxonomy:
         - Organisation
       include_in_first_slice: true
 
+    - url_contains: /paiement-electronique/tarifs-des-prestations
+      vertical: institutionnel
+      domain: onssa
+      subdomain: presentation
+      sub_subdomain: prestations_payantes
+      sub_subdomain_display: Prestations payantes
+      display_path:
+        - ONSSA
+        - Presentation
+        - Prestations payantes
+      include_in_first_slice: true
+
     - url_contains: /prestations-payantes/
       vertical: institutionnel
       domain: onssa

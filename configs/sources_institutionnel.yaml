@@ -1,31 +1,20 @@
 sources:
-  - name: onssa
+  - name: onssa_institutionnel
     base_url: https://www.onssa.gov.ma/
     seed_urls:
-      - https://www.onssa.gov.ma/
       - https://www.onssa.gov.ma/onssa/a-propos-de-lonssa/
       - https://www.onssa.gov.ma/missions/
       - https://www.onssa.gov.ma/organisation/
-      - https://www.onssa.gov.ma/prestations-payantes/
+      - https://www.onssa.gov.ma/paiement-electronique/tarifs-des-prestations/
       - https://www.onssa.gov.ma/oeuvres-sociales/
       - https://www.onssa.gov.ma/contact/
       - https://www.onssa.gov.ma/glossaire/
     allowed_domains:
       - www.onssa.gov.ma
       - onssa.gov.ma
-    max_depth: 2
+    max_depth: 1
     include_url_patterns:
-      - regulation
-      - reglementation
-      - réglementation
-      - securite
-      - sécurité
-      - sanitaire
-      - aliment
-      - aliments
-      - denrees
-      - denrées
-      - onssa
+      - a-propos-de-lonssa
       - missions
       - organisation
       - prestations
@@ -36,6 +25,7 @@ sources:
       - oeuvres-sociales
       - contact
       - glossaire
+      - wp-content/uploads
       - pdf
     exclude_url_patterns:
       - facebook.com
