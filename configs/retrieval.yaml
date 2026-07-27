@@ -6,6 +6,15 @@ retrieval:
   top_k_reranked: 8
   min_retrieval_score: 0.45
   min_rerank_score: 0.20
+  min_rerank_score_by_vertical:
+    institutionnel: 0.05
+  min_rerank_score_by_chunk_type:
+    html_table: 0.01
+    html_table_part: 0.01
+    html_section: 0.05
+    html_section_part: 0.05
+    html_image: 0.05
+    html_image_part: 0.05
   require_evidence: true
 rag:
   max_context_chunks: 8

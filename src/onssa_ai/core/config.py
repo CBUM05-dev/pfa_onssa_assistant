@@ -69,6 +69,8 @@ class RetrievalConfig(BaseModel):
     top_k_reranked: int
     min_retrieval_score: float
     min_rerank_score: float
+    min_rerank_score_by_vertical: dict[str, float] = Field(default_factory=dict)
+    min_rerank_score_by_chunk_type: dict[str, float] = Field(default_factory=dict)
     require_evidence: bool = True
 
 

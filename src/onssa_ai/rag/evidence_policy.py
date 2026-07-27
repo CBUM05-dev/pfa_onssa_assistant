@@ -15,10 +15,24 @@ class EvidencePolicy:
     def is_sufficient(self, evidence: list[RetrievedChunk]) -> bool:
         if not evidence:
             return False
-        if not any(item.chunk.metadata.answer_role in DIRECT_ANSWER_ROLES for item in evidence):
+        direct_evidence = [
+            item for item in evidence if item.chunk.metadata.answer_role in DIRECT_ANSWER_ROLES
+        ]
+        if not direct_evidence:
             return False
-        best_score = max(
-            item.rerank_score if item.rerank_score is not None else item.score
-            for item in evidence
+        return any(self._score(item) >= self._threshold(item) for item in direct_evidence)
+
+    def _score(self, item: RetrievedChunk) -> float:
+        return item.rerank_score if item.rerank_score is not None else item.score
+
+    def _threshold(self, item: RetrievedChunk) -> float:
+        metadata = item.chunk.metadata
+        chunk_type_threshold = self.config.min_rerank_score_by_chunk_type.get(
+            metadata.chunk_type
         )
-        return best_score >= self.config.min_rerank_score
+        if chunk_type_threshold is not None:
+            return chunk_type_threshold
+        vertical_threshold = self.config.min_rerank_score_by_vertical.get(metadata.vertical)
+        if vertical_threshold is not None:
+            return vertical_threshold
+        return self.config.min_rerank_score

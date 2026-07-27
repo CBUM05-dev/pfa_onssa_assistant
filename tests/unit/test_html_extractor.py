@@ -33,4 +33,5 @@ def test_html_extractor_preserves_sections_tables_and_images(tmp_path) -> None:
     assert any(block["block_type"] == "html_table" for block in blocks)
     assert any(block["block_type"] == "html_image" for block in blocks)
     assert "| Service | Contact |" in extracted.text
+    assert "Direction centrale: Contact contact@example.ma." in extracted.text
     assert "Image: Organigramme ONSSA" in extracted.text

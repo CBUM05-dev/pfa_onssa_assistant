@@ -96,7 +96,7 @@ class HtmlExtractor:
                 continue
             if name == "table":
                 flush_text()
-                table_text = self._table_to_markdown(element)
+                table_text = self._table_to_text(element)
                 if table_text:
                     table_index = 1 + sum(
                         1 for block in blocks if block.get("block_type") == "html_table"
@@ -132,7 +132,17 @@ class HtmlExtractor:
         flush_text()
         return self._deduplicate_blocks(blocks)
 
-    def _table_to_markdown(self, table: Tag) -> str:
+    def _table_to_text(self, table: Tag) -> str:
+        rows = self._table_rows(table)
+        if not rows:
+            return ""
+        markdown = self._table_to_markdown(rows)
+        prose = self._table_to_prose(rows)
+        if prose:
+            return f"{markdown}\n\nTexte du tableau:\n{prose}"
+        return markdown
+
+    def _table_rows(self, table: Tag) -> list[list[str]]:
         rows: list[list[str]] = []
         for row in table.find_all("tr"):
             if not isinstance(row, Tag):
@@ -144,6 +154,9 @@ class HtmlExtractor:
             ]
             if any(cells):
                 rows.append(cells)
+        return rows
+
+    def _table_to_markdown(self, rows: list[list[str]]) -> str:
         if not rows:
             return ""
         width = max(len(row) for row in rows)
@@ -154,6 +167,33 @@ class HtmlExtractor:
         markdown_rows = [self._markdown_row(header), self._markdown_row(separator)]
         markdown_rows.extend(self._markdown_row(row) for row in body)
         return "\n".join(markdown_rows)
+
+    def _table_to_prose(self, rows: list[list[str]]) -> str:
+        if len(rows) < 2:
+            return ""
+        width = max(len(row) for row in rows)
+        normalized_rows = [row + [""] * (width - len(row)) for row in rows]
+        headers = [
+            header if header else f"Colonne {index + 1}"
+            for index, header in enumerate(normalized_rows[0])
+        ]
+        lines: list[str] = []
+        for row in normalized_rows[1:]:
+            if not any(cell.strip() for cell in row):
+                continue
+            subject = row[0].strip()
+            details = [
+                f"{headers[index]} {cell.strip()}"
+                for index, cell in enumerate(row[1:], start=1)
+                if cell.strip()
+            ]
+            if subject and details:
+                lines.append(f"- {subject}: {'; '.join(details)}.")
+            elif subject:
+                lines.append(f"- {headers[0]} {subject}.")
+            elif details:
+                lines.append(f"- {'; '.join(details)}.")
+        return "\n".join(lines)
 
     def _markdown_row(self, row: list[str]) -> str:
         return "| " + " | ".join(cell.replace("|", "/") for cell in row) + " |"
