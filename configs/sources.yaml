@@ -45,5 +45,6 @@ sources:
     images_dir: data/raw/images/onssa
     manifest_path: data/sources/onssa_manifest.json
     preserve_url_paths: true
+    verify_ssl: false
     request_timeout_seconds: 30
     user_agent: ONSSA-AI-Service-SourceSync/0.1

@@ -19,6 +19,7 @@ class SourceConfig(BaseModel):
     images_dir: Path = Path("data/raw/images")
     manifest_path: Path
     preserve_url_paths: bool = False
+    verify_ssl: bool = True
     request_timeout_seconds: int = Field(default=30, ge=1)
     user_agent: str = "ONSSA-AI-Service-SourceSync/0.1"
 

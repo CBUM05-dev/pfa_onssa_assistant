@@ -30,15 +30,17 @@ class BlockedSourceError(RuntimeError):
 class SourceDownloader:
     """Download HTML pages and PDF files."""
 
-    def __init__(self, timeout_seconds: int, user_agent: str) -> None:
+    def __init__(self, timeout_seconds: int, user_agent: str, verify_ssl: bool = True) -> None:
         self.timeout_seconds = timeout_seconds
         self.headers = {"User-Agent": user_agent}
+        self.verify_ssl = verify_ssl
 
     def download(self, url: str) -> DownloadedContent:
         with httpx.Client(
             timeout=self.timeout_seconds,
             follow_redirects=True,
             headers=self.headers,
+            verify=self.verify_ssl,
         ) as client:
             response = client.get(url)
             response.raise_for_status()

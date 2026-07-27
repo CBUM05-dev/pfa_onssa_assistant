@@ -57,6 +57,7 @@ class SourceCrawler:
                 timeout=self.config.request_timeout_seconds,
                 follow_redirects=True,
                 headers=self.headers,
+                verify=self.config.verify_ssl,
             ) as client:
                 response = client.get(page_url)
                 response.raise_for_status()

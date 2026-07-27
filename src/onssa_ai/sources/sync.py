@@ -16,6 +16,7 @@ class SourceSyncService:
         self.downloader = SourceDownloader(
             timeout_seconds=config.request_timeout_seconds,
             user_agent=config.user_agent,
+            verify_ssl=config.verify_ssl,
         )
         self.manifest = SourceManifest(config.manifest_path)
 
