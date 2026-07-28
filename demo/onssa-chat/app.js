@@ -1,86 +1,15 @@
 const API_ENDPOINT = "/api/rag/answer";
 
-const sampleResponse = {
-  answer:
-    "La base reglementaire de la securite sanitaire des produits alimentaires est etablie par la loi n°28-07 relative a la securite sanitaire des produits alimentaires, promulguee par le dahir n°1-10-08 du 26 safar 1431 (11 fevrier 2010).\n\nSelon l'article 5, les produits primaires, les produits alimentaires et les aliments pour animaux doivent etre produits, manipules, traites, transformes, emballes, transportes, entreposes et mis en vente dans des conditions d'hygiene et de salubrite propres a preserver leur qualite et a garantir leur securite sanitaire.\n\nLe decret n°2-10-473 du 7 chaoual 1432 (6 septembre 2011) precise les mesures d'application de la loi n°28-07, notamment les autorisations, les agrements sanitaires, les conditions d'hygiene, l'autocontrole et la tracabilite.",
-  citations: [
-    {
-      document_id: "onssa-pdf-aabcbe4f861b8483",
-      document_title: "LOI 28-07 FR",
-      source_file: "data/raw/pdfs/onssa/LOI_28-07_FR.pdf",
-      page: 4,
-      article: "Article 5",
-      section: null,
-      chunk_id: "chunk-468a590d583ddf4ed482aa18",
-      quote:
-        "Article 5 Afin qu'aucun produit primaire ni produit alimentaire ne constitue un danger...",
-    },
-    {
-      document_id: "onssa-pdf-da0be16b7fa0fd13",
-      document_title: "DEC 2-10-473 FR",
-      source_file: "data/raw/pdfs/onssa/DEC_2-10-473_FR.pdf",
-      page: 1,
-      article: null,
-      section: "TITRE PREMIER",
-      chunk_id: "chunk-2dc9b1bb09ff0e5e6d7f3087",
-      quote:
-        "Le present decret fixe les mesures permettant de preserver la qualite et de garantir la securite sanitaire...",
-    },
-  ],
-  evidence: [
-    {
-      chunk: {
-        chunk_id: "chunk-468a590d583ddf4ed482aa18",
-        text:
-          "Article 5 Afin qu'aucun produit primaire ni produit alimentaire ni un aliment pour animaux ne constitue un danger pour la vie ou la sante humaine ou animale...",
-        metadata: {
-          vertical: "regulation",
-          domain: "reglementation_transversale",
-          subdomain: "securite_sanitaire",
-          document_title: "LOI 28-07 FR",
-          page_start: 4,
-          page_end: 5,
-          article: "Article 5",
-          citation_label: "LOI 28-07 FR, Article 5, pp. 4-5",
-        },
-      },
-      score: 0.5977447,
-      rerank_score: 0.6781114936,
-    },
-    {
-      chunk: {
-        chunk_id: "chunk-2dc9b1bb09ff0e5e6d7f3087",
-        text:
-          "Conformement aux dispositions de l'article 5 de la loi n°28-07, le present decret fixe les mesures permettant de preserver la qualite...",
-        metadata: {
-          vertical: "regulation",
-          domain: "reglementation_transversale",
-          subdomain: "securite_sanitaire",
-          document_title: "DEC 2-10-473 FR",
-          page_start: 1,
-          page_end: 3,
-          section: "TITRE PREMIER",
-          citation_label: "DEC 2-10-473 FR, TITRE PREMIER, pp. 1-3",
-        },
-      },
-      score: 0.61228883,
-      rerank_score: 0.792271316,
-    },
-  ],
-  confidence: "sufficient",
-  refused: false,
-  request_id: "demo-response",
-};
-
 const chatWidget = document.querySelector("#chatWidget");
 const chatBody = document.querySelector("#chatBody");
 const chatForm = document.querySelector("#chatForm");
 const questionInput = document.querySelector("#questionInput");
+const chatLauncher = document.querySelector("#chatLauncher");
 const backendStatus = document.querySelector("#backendStatus");
 const detailsDialog = document.querySelector("#detailsDialog");
 const detailsContent = document.querySelector("#detailsContent");
 
-document.querySelector("#chatLauncher").addEventListener("click", openChat);
+chatLauncher.addEventListener("click", openChat);
 document.querySelector("#openChatHero").addEventListener("click", openChat);
 document.querySelector("#openChatBand").addEventListener("click", openChat);
 document.querySelector("#closeChat").addEventListener("click", closeChat);
@@ -95,22 +24,38 @@ chatForm.addEventListener("submit", async (event) => {
 
   appendMessage("user", question);
   questionInput.value = "";
-  const pending = appendMessage("assistant", "Recherche des preuves dans Qdrant...");
+  setFormDisabled(true);
+  const pending = appendMessage("assistant", "Recherche des preuves et generation de la reponse...");
 
-  const response = await askRag(question);
-  pending.remove();
-  appendAssistantResponse(response);
+  try {
+    const response = await askRag(question);
+    pending.remove();
+    appendAssistantResponse(response);
+  } catch (error) {
+    pending.remove();
+    appendError(error);
+  } finally {
+    setFormDisabled(false);
+    questionInput.focus();
+  }
 });
 
 function openChat() {
   chatWidget.classList.add("open");
   chatWidget.setAttribute("aria-hidden", "false");
+  chatLauncher.hidden = true;
   questionInput.focus();
 }
 
 function closeChat() {
   chatWidget.classList.remove("open");
   chatWidget.setAttribute("aria-hidden", "true");
+  chatLauncher.hidden = false;
+}
+
+function setFormDisabled(disabled) {
+  questionInput.disabled = disabled;
+  chatForm.querySelector("button").disabled = disabled;
 }
 
 function appendMessage(type, text) {
@@ -120,26 +65,29 @@ function appendMessage(type, text) {
   paragraph.textContent = text;
   article.appendChild(paragraph);
   chatBody.appendChild(article);
-  chatBody.scrollTop = chatBody.scrollHeight;
+  scrollChatToEnd();
   return article;
 }
 
-function appendAssistantResponse(response) {
+function appendAssistantResponse(rawResponse) {
+  const response = normalizeRagResponse(rawResponse);
   const article = document.createElement("article");
-  article.className = "message assistant";
+  article.className = `message assistant ${response.refused ? "is-refused" : ""}`;
 
   const answer = document.createElement("p");
   answer.className = "answer-text";
-  answer.textContent = response.answer;
+  answer.textContent = response.answer || "Le backend n'a retourne aucune reponse textuelle.";
   article.appendChild(answer);
 
-  if (response.citations?.length) {
+  if (response.citations.length) {
     const citations = document.createElement("div");
     citations.className = "citation-list";
-    response.citations.slice(0, 3).forEach((citation) => {
-      const chip = document.createElement("div");
+    response.citations.slice(0, 4).forEach((citation) => {
+      const chip = document.createElement("button");
       chip.className = "citation-chip";
+      chip.type = "button";
       chip.textContent = formatCitation(citation);
+      chip.addEventListener("click", () => openDetails(response));
       citations.appendChild(chip);
     });
     article.appendChild(citations);
@@ -151,49 +99,67 @@ function appendAssistantResponse(response) {
   const detailsButton = document.createElement("button");
   detailsButton.className = "details-button";
   detailsButton.type = "button";
-  detailsButton.textContent = "Voir details";
+  detailsButton.textContent = "Voir les preuves";
   detailsButton.addEventListener("click", () => openDetails(response));
 
   const meta = document.createElement("span");
   meta.className = "meta-line";
-  meta.textContent = `Confiance: ${response.confidence || "n/a"} · preuves: ${
-    response.evidence?.length || 0
-  }`;
+  meta.textContent = `Confiance: ${response.confidence || "n/a"} | preuves: ${response.evidence.length}`;
 
   tools.append(detailsButton, meta);
   article.appendChild(tools);
   chatBody.appendChild(article);
-  chatBody.scrollTop = chatBody.scrollHeight;
+  scrollChatToEnd();
+}
+
+function appendError(error) {
+  backendStatus.textContent = "Backend indisponible";
+  backendStatus.classList.add("is-error");
+
+  const article = document.createElement("article");
+  article.className = "message assistant error-message";
+
+  const title = document.createElement("strong");
+  title.textContent = "La reponse RAG n'a pas pu etre recuperee.";
+
+  const detail = document.createElement("p");
+  detail.textContent = error.message || "Erreur inconnue.";
+
+  article.append(title, detail);
+  chatBody.appendChild(article);
+  scrollChatToEnd();
 }
 
 async function askRag(question) {
-  try {
-    const result = await fetch(API_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question }),
-    });
-    if (!result.ok) {
-      throw new Error(`Backend HTTP ${result.status}`);
-    }
-    backendStatus.textContent = "Backend connecte";
-    return await result.json();
-  } catch (error) {
-    backendStatus.textContent = "Mode exemple";
-    return {
-      ...sampleResponse,
-      request_id: `sample-${Date.now()}`,
-      answer: `${sampleResponse.answer}\n\n[Mode exemple: le backend FastAPI n'a pas repondu depuis cette page.]`,
-    };
+  const payload = buildRagPayload(question);
+  const result = await fetch(API_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  const body = await readJson(result);
+  if (!result.ok) {
+    throw new Error(formatBackendError(result.status, body));
   }
+
+  backendStatus.textContent = "Backend connecte";
+  backendStatus.classList.remove("is-error");
+  return body;
+}
+
+function buildRagPayload(question) {
+  return { question };
 }
 
 async function checkBackend() {
   try {
     const result = await fetch("/api/health");
     backendStatus.textContent = result.ok ? "Backend connecte" : "Backend non verifie";
+    backendStatus.classList.toggle("is-error", !result.ok);
   } catch {
-    backendStatus.textContent = "Mode exemple";
+    backendStatus.textContent = "Backend indisponible";
+    backendStatus.classList.add("is-error");
   }
 }
 
@@ -211,25 +177,70 @@ function openDetails(response) {
     statBlock("Citations", String(citations.length))
   );
 
-  const list = document.createElement("div");
-  list.className = "evidence-list";
+  const citationList = document.createElement("div");
+  citationList.className = "evidence-list";
+  citations.forEach((citation, index) => {
+    const node = document.createElement("article");
+    node.className = "evidence-item";
+    node.innerHTML = `
+      <span>Citation ${index + 1}</span>
+      <strong>${escapeHtml(formatCitation(citation))}</strong>
+      ${citation.quote ? `<p>${escapeHtml(citation.quote)}</p>` : ""}
+      <code>${escapeHtml(citation.chunk_id || citation.document_id || "")}</code>
+    `;
+    citationList.appendChild(node);
+  });
+
+  const evidenceList = document.createElement("div");
+  evidenceList.className = "evidence-list";
   evidence.forEach((item, index) => {
-    const metadata = item.chunk?.metadata || {};
+    const chunk = item.chunk || {};
+    const metadata = chunk.metadata || {};
     const node = document.createElement("article");
     node.className = "evidence-item";
     node.innerHTML = `
       <span>Preuve ${index + 1}</span>
-      <strong>${escapeHtml(metadata.citation_label || metadata.document_title || "Source")}</strong>
-      <p>${escapeHtml((item.chunk?.text || "").slice(0, 520))}</p>
-      <code>retrieval: ${formatScore(item.score)} · rerank: ${formatScore(
-        item.rerank_score
-      )} · ${escapeHtml(item.chunk?.chunk_id || "")}</code>
+      <strong>${escapeHtml(metadata.citation_label || metadata.document_title || chunk.document_title || "Source")}</strong>
+      <p>${escapeHtml((chunk.text || "").slice(0, 700))}</p>
+      <code>retrieval: ${formatScore(item.score)} | rerank: ${formatScore(item.rerank_score)} | ${escapeHtml(
+        chunk.chunk_id || ""
+      )}</code>
     `;
-    list.appendChild(node);
+    evidenceList.appendChild(node);
   });
 
-  detailsContent.append(stats, list);
+  detailsContent.append(stats);
+  if (citations.length) {
+    detailsContent.append(sectionTitle("Citations"), citationList);
+  }
+  if (evidence.length) {
+    detailsContent.append(sectionTitle("Passages recuperes"), evidenceList);
+  }
+  if (!citations.length && !evidence.length) {
+    const empty = document.createElement("p");
+    empty.className = "empty-details";
+    empty.textContent = "Aucune preuve detaillee n'a ete retournee par le backend.";
+    detailsContent.appendChild(empty);
+  }
   detailsDialog.showModal();
+}
+
+function normalizeRagResponse(response) {
+  return {
+    answer: response?.answer || "",
+    citations: Array.isArray(response?.citations) ? response.citations : [],
+    evidence: Array.isArray(response?.evidence) ? response.evidence : [],
+    confidence: response?.confidence || "n/a",
+    refused: Boolean(response?.refused),
+    request_id: response?.request_id || "n/a",
+  };
+}
+
+function sectionTitle(text) {
+  const title = document.createElement("h3");
+  title.className = "details-section-title";
+  title.textContent = text;
+  return title;
 }
 
 function statBlock(label, value) {
@@ -240,12 +251,36 @@ function statBlock(label, value) {
 }
 
 function formatCitation(citation) {
-  const parts = [citation.document_title, citation.article, citation.section, citation.page && `p. ${citation.page}`];
-  return parts.filter(Boolean).join(" · ");
+  const parts = [
+    citation.document_title,
+    citation.article,
+    citation.section,
+    citation.page ? `p. ${citation.page}` : null,
+  ];
+  return parts.filter(Boolean).join(" | ") || citation.document_id || "Source";
+}
+
+function formatBackendError(status, body) {
+  const detail = typeof body?.detail === "string" ? body.detail : "Erreur backend sans detail.";
+  return `HTTP ${status}: ${detail}`;
+}
+
+async function readJson(response) {
+  const text = await response.text();
+  if (!text) return null;
+  try {
+    return JSON.parse(text);
+  } catch {
+    return { detail: text };
+  }
 }
 
 function formatScore(value) {
   return typeof value === "number" ? value.toFixed(3) : "n/a";
+}
+
+function scrollChatToEnd() {
+  chatBody.scrollTop = chatBody.scrollHeight;
 }
 
 function escapeHtml(value) {

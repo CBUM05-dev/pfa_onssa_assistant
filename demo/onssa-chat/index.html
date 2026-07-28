@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ONSSA Assistant Reglementaire - Demo</title>
+    <title>ONSSA Assistant Reglementaire</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -17,11 +17,7 @@
     <main class="page-shell">
       <nav class="main-nav" aria-label="Navigation principale">
         <a class="brand" href="#">
-          <span class="brand-mark">ONSSA</span>
-          <span class="brand-copy">
-            <strong>ONSSA</strong>
-            <small>Assistant reglementaire</small>
-          </span>
+          <img class="brand-logo" src="/images/imonssa3.jpg" alt="ONSSA" />
         </a>
         <div class="nav-links">
           <a href="#">Accueil</a>
@@ -33,11 +29,11 @@
 
       <section class="hero">
         <div class="hero-content">
-          <p class="kicker">Vertical slice de demonstration</p>
-          <h1>Controle rapide des textes reglementaires ONSSA.</h1>
+          <p class="kicker">Recherche citee dans le corpus ONSSA</p>
+          <h1>Assistant reglementaire pour la securite sanitaire.</h1>
           <p class="hero-copy">
-            Posez une question en langage naturel. Le systeme recupere les preuves depuis Qdrant,
-            reranke les passages, puis genere une reponse citee via le backend de test Groq.
+            Posez une question en langage naturel. Le service interroge le backend RAG,
+            recupere les passages sources et affiche une reponse avec citations tracables.
           </p>
           <div class="hero-actions">
             <button class="primary-action" id="openChatHero" type="button">Tester l'assistant</button>
@@ -45,32 +41,21 @@
           </div>
         </div>
 
-        <div class="official-panel" aria-label="Apercu du service">
-          <div class="panel-header">
+        <div class="visual-panel" aria-label="Controle sanitaire ONSSA">
+          <img src="/images/imonssa1.jfif" alt="Agent ONSSA lors d'un controle sanitaire" />
+          <div class="visual-caption">
             <span>Service numerique</span>
             <strong>Reglementation / Securite sanitaire</strong>
-          </div>
-          <div class="signal-row">
-            <span>Corpus</span>
-            <strong>ONSSA</strong>
-          </div>
-          <div class="signal-row">
-            <span>Recherche</span>
-            <strong>Qdrant + BGE</strong>
-          </div>
-          <div class="signal-row">
-            <span>Citations</span>
-            <strong>Pages, articles, chunks</strong>
           </div>
         </div>
       </section>
 
       <section class="service-band">
         <div>
-          <h2>Resultat lisible pour la validation responsable</h2>
+          <h2>Resultat lisible, preuves inspectables</h2>
           <p>
-            La demonstration garde les details techniques disponibles, mais les separe de la
-            reponse principale pour une lecture claire.
+            Les erreurs backend sont affichees clairement. Aucune reponse constante n'est injectee
+            quand le service RAG ne repond pas.
           </p>
         </div>
         <button class="secondary-action" id="openChatBand" type="button">Ouvrir le chat</button>
@@ -78,7 +63,7 @@
     </main>
 
     <button class="chat-launcher" id="chatLauncher" type="button" aria-label="Ouvrir le chat">
-      <img src="assets/avatar_icon.png" alt="" />
+      <img src="/images/avatar_icon.png" alt="" />
       <span>Assistant</span>
     </button>
 
@@ -94,8 +79,8 @@
       <div class="chat-body" id="chatBody">
         <article class="message assistant">
           <p>
-            Bonjour. Posez une question sur le vertical slice
-            <strong>reglementation transversale / securite sanitaire</strong>.
+            Bonjour. Posez votre question, le systeme detecte automatiquement le domaine
+            pertinent avant la recherche de preuves.
           </p>
         </article>
       </div>

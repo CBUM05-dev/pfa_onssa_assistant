@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import mimetypes
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib import error, request
@@ -11,10 +12,14 @@ from urllib import error, request
 
 class DemoHandler(SimpleHTTPRequestHandler):
     backend_url = "http://127.0.0.1:8000"
+    images_dir: Path | None = None
 
     def do_GET(self) -> None:
         if self.path == "/api/health":
             self._proxy("GET", "/health")
+            return
+        if self.path.startswith("/images/"):
+            self._serve_image()
             return
         super().do_GET()
 
@@ -57,6 +62,26 @@ class DemoHandler(SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(payload)
 
+    def _serve_image(self) -> None:
+        if self.images_dir is None:
+            self.send_error(404, "Images directory is not configured")
+            return
+
+        image_name = Path(self.path.removeprefix("/images/")).name
+        image_path = (self.images_dir / image_name).resolve()
+        images_root = self.images_dir.resolve()
+        if images_root not in image_path.parents or not image_path.is_file():
+            self.send_error(404, "Image not found")
+            return
+
+        content_type = mimetypes.guess_type(str(image_path))[0] or "application/octet-stream"
+        payload = image_path.read_bytes()
+        self.send_response(200)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Content-Length", str(len(payload)))
+        self.end_headers()
+        self.wfile.write(payload)
+
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run the isolated ONSSA chat demo.")
@@ -65,7 +90,9 @@ def main() -> None:
     args = parser.parse_args()
 
     demo_dir = Path(__file__).resolve().parent
+    project_root = demo_dir.parents[1]
     DemoHandler.backend_url = args.backend_url.rstrip("/")
+    DemoHandler.images_dir = project_root / "IMAGES_ONSSA"
     server = ThreadingHTTPServer(("127.0.0.1", args.port), DemoHandler)
     print(f"Demo: http://127.0.0.1:{args.port}")
     print(f"Backend: {DemoHandler.backend_url}")

@@ -2,6 +2,7 @@
 
 import httpx
 from fastapi import APIRouter, HTTPException, status
+from qdrant_client.http.exceptions import ResponseHandlingException
 
 from onssa_ai.api.dependencies import get_rag_service
 from onssa_ai.schemas.rag import RagRequest, RagResponse
@@ -25,4 +26,9 @@ async def answer(request: RagRequest) -> RagResponse:
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
             detail="Unable to reach configured LLM provider.",
+        ) from exc
+    except ResponseHandlingException as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"Unable to reach Qdrant vector database: {exc}.",
         ) from exc
