@@ -64,6 +64,11 @@ def parse_args() -> argparse.Namespace:
         help="Override Qdrant port.",
     )
     parser.add_argument("--batch-size", type=int, default=64, help="Qdrant upsert batch size.")
+    parser.add_argument(
+        "--recreate-collection",
+        action="store_true",
+        help="Delete and recreate the target collection before indexing.",
+    )
     return parser.parse_args()
 
 
@@ -111,6 +116,8 @@ def main() -> None:
     validate_embedding_dimensions(chunks, qdrant_config.vector_size)
 
     client = build_qdrant_client(qdrant_config)
+    if args.recreate_collection and client.collection_exists(qdrant_config.collection_name):
+        client.delete_collection(qdrant_config.collection_name)
     QdrantCollectionManager(client, qdrant_config).ensure_collection()
     indexed_count = VectorIndexer(
         client=client,

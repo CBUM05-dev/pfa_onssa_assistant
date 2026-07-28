@@ -22,6 +22,7 @@ class RegulatoryUnit:
     article: str | None = None
     section: str | None = None
     structure_path: list[str] = field(default_factory=list)
+    min_chars: int | None = None
 
 
 class CorpusChunker:
@@ -68,7 +69,8 @@ class CorpusChunker:
             units = self._document_units(document)
             for unit in units:
                 for split_unit in self._split_unit_if_needed(unit):
-                    if len(split_unit.text) < self.min_chars:
+                    minimum_chars = split_unit.min_chars or self.min_chars
+                    if len(split_unit.text) < minimum_chars:
                         continue
                     chunk_index = len(chunks)
                     chunks.append(self._build_chunk(document, split_unit, chunk_index))
@@ -101,9 +103,6 @@ class CorpusChunker:
         for index, block in enumerate(blocks, start=1):
             if not isinstance(block, dict):
                 continue
-            text = self._normalize_text(str(block.get("text") or ""))
-            if len(text) < self.min_chars:
-                continue
             block_type = str(block.get("block_type") or "html_section")
             title = str(block.get("title") or "").strip() or None
             heading_path_value = block.get("heading_path") or []
@@ -112,6 +111,20 @@ class CorpusChunker:
                 for value in heading_path_value
                 if str(value).strip()
             ] if isinstance(heading_path_value, list) else []
+            raw_text = str(block.get("text") or "")
+            definition_units = self._definition_units(
+                raw_text=raw_text,
+                title=title,
+                heading_path=heading_path,
+                page_number=index,
+                metadata=document.metadata,
+            )
+            if definition_units:
+                units.extend(definition_units)
+                continue
+            text = self._normalize_text(raw_text)
+            if len(text) < self.min_chars:
+                continue
             units.append(
                 RegulatoryUnit(
                     text=text,
@@ -123,6 +136,90 @@ class CorpusChunker:
                 )
             )
         return units
+
+    def _definition_units(
+        self,
+        raw_text: str,
+        title: str | None,
+        heading_path: list[str],
+        page_number: int,
+        metadata: dict[str, object],
+    ) -> list[RegulatoryUnit]:
+        if not self._looks_like_definition_collection(title, heading_path, metadata):
+            return []
+        entries = self._definition_entries(raw_text, heading_path)
+        if len(entries) < 2:
+            return []
+        units: list[RegulatoryUnit] = []
+        for term, definition in entries:
+            text = self._normalize_text(f"{term}: {definition}")
+            units.append(
+                RegulatoryUnit(
+                    text=text,
+                    page_numbers=[page_number],
+                    chunk_type="html_definition",
+                    title=term,
+                    section=term,
+                    structure_path=[*heading_path, term],
+                    min_chars=20,
+                )
+            )
+        return units
+
+    def _looks_like_definition_collection(
+        self,
+        title: str | None,
+        heading_path: list[str],
+        metadata: dict[str, object],
+    ) -> bool:
+        values = [
+            title or "",
+            *heading_path,
+            str(metadata.get("site_sub_subdomain") or ""),
+            str(metadata.get("site_sub_subdomain_display") or ""),
+        ]
+        normalized = " ".join(self._normalize_text(value).lower() for value in values)
+        return any(keyword in normalized for keyword in ["glossaire", "glossary", "definition"])
+
+    def _definition_entries(
+        self,
+        raw_text: str,
+        heading_path: list[str],
+    ) -> list[tuple[str, str]]:
+        lines = [
+            self._normalize_text(line)
+            for line in raw_text.splitlines()
+            if self._normalize_text(line)
+        ]
+        heading_values = {self._normalize_text(value) for value in heading_path}
+        lines = [line for line in lines if line not in heading_values and " > " not in line]
+        entries: list[tuple[str, str]] = []
+        current_term: str | None = None
+        current_definition: list[str] = []
+        for line in lines:
+            if self._looks_like_definition_term(line):
+                if current_term and current_definition:
+                    definition = self._normalize_text(" ".join(current_definition))
+                    entries.append((current_term, definition))
+                current_term = line.rstrip(":")
+                current_definition = []
+            elif current_term:
+                current_definition.append(line)
+        if current_term and current_definition:
+            definition = self._normalize_text(" ".join(current_definition))
+            entries.append((current_term, definition))
+        return entries
+
+    def _looks_like_definition_term(self, line: str) -> bool:
+        clean = line.strip().rstrip(":")
+        if not clean or len(clean) > 90:
+            return False
+        if clean.endswith((".", ";", ",")):
+            return False
+        words = clean.split()
+        if len(words) > 8:
+            return False
+        return clean[0].isupper()
 
     def _structure_units(self, pages: list[CorpusPage]) -> list[RegulatoryUnit]:
         units: list[RegulatoryUnit] = []
@@ -163,7 +260,11 @@ class CorpusChunker:
                     chunk_type=marker_kind,
                     title=marker_title,
                     article=marker_title if marker_kind == "article" else None,
-                    section=marker_title if marker_kind in {"section", "chapitre", "titre"} else None,
+                    section=(
+                        marker_title
+                        if marker_kind in {"section", "chapitre", "titre"}
+                        else None
+                    ),
                     structure_path=list(current_path),
                 )
 
@@ -211,6 +312,7 @@ class CorpusChunker:
                         article=unit.article,
                         section=unit.section,
                         structure_path=[*unit.structure_path, f"part {split_index}"],
+                        min_chars=unit.min_chars,
                     )
                 )
                 split_index += 1

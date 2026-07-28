@@ -61,6 +61,14 @@ class InferenceEndpointConfig(BaseModel):
     timeout_seconds: int = 120
 
 
+class QueryRoutingRule(BaseModel):
+    keywords: list[str] = Field(default_factory=list)
+    vertical: str | None = None
+    domain: str | None = None
+    subdomain: str | None = None
+    site_sub_subdomain: str | None = None
+
+
 class RetrievalConfig(BaseModel):
     vertical: str
     domain: str
@@ -71,6 +79,7 @@ class RetrievalConfig(BaseModel):
     min_rerank_score: float
     min_rerank_score_by_vertical: dict[str, float] = Field(default_factory=dict)
     min_rerank_score_by_chunk_type: dict[str, float] = Field(default_factory=dict)
+    query_routing_rules: list[QueryRoutingRule] = Field(default_factory=list)
     require_evidence: bool = True
 
 

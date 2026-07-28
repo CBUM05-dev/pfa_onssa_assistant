@@ -9,6 +9,7 @@ class RetrievalFilters(BaseModel):
     vertical: str | None = None
     domain: str | None = None
     subdomain: str | None = None
+    site_sub_subdomain: str | None = None
     document_id: str | None = None
     language: str | None = None
 

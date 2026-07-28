@@ -44,4 +44,5 @@ def get_rag_service() -> RagService:
         citation_builder=CitationBuilder(),
         evidence_policy=EvidencePolicy(settings.retrieval),
         rag_config=settings.rag,
+        retrieval_config=settings.retrieval,
     )

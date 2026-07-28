@@ -11,6 +11,7 @@ def build_payload_filter(filters: RetrievalFilters) -> models.Filter | None:
         "vertical": filters.vertical,
         "domain": filters.domain,
         "subdomain": filters.subdomain,
+        "site_sub_subdomain": filters.site_sub_subdomain,
         "document_id": filters.document_id,
         "language": filters.language,
     }

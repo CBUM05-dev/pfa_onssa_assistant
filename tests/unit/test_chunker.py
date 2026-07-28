@@ -49,7 +49,8 @@ def test_chunker_detects_art_abbreviation_as_article_marker() -> None:
                         page_number=3,
                         text=(
                             "TITRE II Des autorisations. "
-                            "ART. 7. - Si le dossier n'est pas complet, le service avise le demandeur. "
+                            "ART. 7. - Si le dossier n'est pas complet, le service avise "
+                            "le demandeur. "
                             "ART. 8. - Lorsque la demande et le dossier sont conformes, il est "
                             "procede dans un delai maximum de 45 jours a une visite sanitaire."
                         ),
@@ -72,3 +73,47 @@ def test_chunker_uses_html_blocks_for_page_documents() -> None:
     assert chunks[0].metadata.chunk_type == "html_section"
     assert chunks[0].metadata.structure_path == ["ONSSA", "Missions"]
     assert chunks[0].metadata.citation_label == "Missions, Missions"
+
+
+def test_chunker_splits_glossary_like_html_blocks_into_definitions() -> None:
+    corpus = KnowledgeCorpus(
+        documents=[
+            CorpusDocument(
+                document_id="onssa-glossaire",
+                title="Glossaire",
+                source_url="https://www.onssa.gov.ma/glossaire/",
+                source_hash="abc",
+                document_type="page",
+                vertical="institutionnel",
+                domain="onssa",
+                subdomain="presentation",
+                pages=[],
+                metadata={
+                    "site_sub_subdomain": "glossaire",
+                    "html_blocks": [
+                        {
+                            "block_type": "html_section",
+                            "title": "Glossaire",
+                            "heading_path": ["ONSSA", "Glossaire"],
+                            "text": (
+                                "Glossaire\n"
+                                "Traçabilité\n"
+                                "La capacité de retracer un produit dans la chaîne alimentaire.\n"
+                                "Produit alimentaire\n"
+                                "Tout produit destiné à la consommation humaine."
+                            ),
+                        }
+                    ],
+                },
+            )
+        ]
+    )
+
+    chunks = CorpusChunker(min_chars=80).build_chunks(corpus)
+
+    assert [chunk.metadata.chunk_type for chunk in chunks] == [
+        "html_definition",
+        "html_definition",
+    ]
+    assert chunks[0].metadata.section == "Traçabilité"
+    assert chunks[0].text.startswith("Traçabilité:")

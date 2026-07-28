@@ -19,6 +19,7 @@ def embedded_chunk_row(chunk_id: str = "chunk-1", dimension: int = 3) -> dict:
             "vertical": "food_safety",
             "domain": "reglementation_transversale",
             "subdomain": "securite_sanitaire",
+            "site_sub_subdomain": "glossaire",
             "document_id": "doc-1",
             "document_title": "Document ONSSA",
             "chunk_index": 0,
@@ -65,5 +66,6 @@ def test_payload_preserves_text_and_citation_metadata(tmp_path: Path) -> None:
     assert payload["chunk_id"] == "chunk-1"
     assert payload["text"] == "Texte reglementaire ONSSA."
     assert payload["citation_label"] == "Document ONSSA"
+    assert payload["site_sub_subdomain"] == "glossaire"
     assert payload["embedding_model"] == "BAAI/bge-m3"
     assert stable_point_id("chunk-1") == stable_point_id("chunk-1")
