@@ -57,3 +57,31 @@ Read the project in this order:
 2. `docs/steps/step2_source_sync.md`
 3. `docs/steps/step3_build_knowledge_corpus.md`
 4. `docs/steps/step4_corpus_validation_chunking.md`
+5. `docs/steps/step5_embeddings.md`
+6. `docs/steps/step6_qdrant_indexing.md`
+7. `docs/steps/step7_rag_groq_test.md`
+
+## Getting Started
+
+```bash
+cp .env.example .env
+pip install -e .
+make sync-sources
+make build-corpus
+make build-chunks
+make build-embeddings
+make init-qdrant
+make index-qdrant
+make run-api
+```
+
+The API serves on `http://localhost:8000`. See `docs/api.md` for the endpoint reference (`/health`, `/api/v1/rag/answer`, `/api/v1/search`).
+
+For the Groq temporary test backend, follow `docs/onssa_server_groq_test_installation.md`. For a local browser demo of the RAG chat flow, see `demo/onssa-chat/README.md`.
+
+## Testing
+
+```bash
+make test
+make lint
+```
