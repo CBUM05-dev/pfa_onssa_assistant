@@ -273,6 +273,8 @@ scp -r "C:\Users\user\OneDrive\Desktop\india\projects\PFA_LLM__ONSSA_VF\data\pro
 scp -r "C:\Users\user\OneDrive\Desktop\india\projects\PFA_LLM__ONSSA_VF\data\models\base" SERVER_USER@SERVER_IP:/opt/onssa-ai/data/models/
 ```
 
+
+HNA FIN WSLNA
 Back in PuTTY, verify:
 
 ```bash

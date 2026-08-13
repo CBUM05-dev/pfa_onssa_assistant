@@ -16,3 +16,10 @@ data/models/merged/*
 data/eval/runs/*
 data/eval/reports/*
 !data/**/.gitkeep
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
